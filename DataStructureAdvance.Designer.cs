@@ -29,15 +29,13 @@
         private void InitializeComponent()
         {
             this.listViewDisplay = new System.Windows.Forms.ListView();
-            this.Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Category = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.labelName = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.comboBoxCategory = new System.Windows.Forms.ComboBox();
             this.labelCategory = new System.Windows.Forms.Label();
             this.groupBoxRadioButton = new System.Windows.Forms.GroupBox();
-            this.radioButtonLinear = new System.Windows.Forms.RadioButton();
             this.radioButtonNonLinear = new System.Windows.Forms.RadioButton();
+            this.radioButtonLinear = new System.Windows.Forms.RadioButton();
             this.textBoxDefinition = new System.Windows.Forms.TextBox();
             this.labelDefinition = new System.Windows.Forms.Label();
             this.buttonSearch = new System.Windows.Forms.Button();
@@ -48,6 +46,8 @@
             this.buttonAdd = new System.Windows.Forms.Button();
             this.statusStripMessage = new System.Windows.Forms.StatusStrip();
             this.statusMessage = new System.Windows.Forms.ToolStripStatusLabel();
+            this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderCategory = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBoxRadioButton.SuspendLayout();
             this.statusStripMessage.SuspendLayout();
             this.SuspendLayout();
@@ -56,8 +56,8 @@
             // 
             this.listViewDisplay.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.listViewDisplay.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Name,
-            this.Category});
+            this.columnHeaderName,
+            this.columnHeaderCategory});
             this.listViewDisplay.HideSelection = false;
             this.listViewDisplay.Location = new System.Drawing.Point(258, 12);
             this.listViewDisplay.Name = "listViewDisplay";
@@ -65,16 +65,6 @@
             this.listViewDisplay.TabIndex = 0;
             this.listViewDisplay.UseCompatibleStateImageBehavior = false;
             this.listViewDisplay.View = System.Windows.Forms.View.Details;
-            // 
-            // Name
-            // 
-            this.Name.Text = "Name";
-            this.Name.Width = 76;
-            // 
-            // Category
-            // 
-            this.Category.Text = "Category";
-            this.Category.Width = 103;
             // 
             // labelName
             // 
@@ -96,6 +86,7 @@
             // 
             // comboBoxCategory
             // 
+            this.comboBoxCategory.BackColor = System.Drawing.Color.Crimson;
             this.comboBoxCategory.FormattingEnabled = true;
             this.comboBoxCategory.Location = new System.Drawing.Point(25, 95);
             this.comboBoxCategory.Name = "comboBoxCategory";
@@ -123,17 +114,6 @@
             this.groupBoxRadioButton.TabStop = false;
             this.groupBoxRadioButton.Text = "Structure";
             // 
-            // radioButtonLinear
-            // 
-            this.radioButtonLinear.AutoSize = true;
-            this.radioButtonLinear.Location = new System.Drawing.Point(6, 19);
-            this.radioButtonLinear.Name = "radioButtonLinear";
-            this.radioButtonLinear.Size = new System.Drawing.Size(54, 17);
-            this.radioButtonLinear.TabIndex = 6;
-            this.radioButtonLinear.TabStop = true;
-            this.radioButtonLinear.Text = "Linear";
-            this.radioButtonLinear.UseVisualStyleBackColor = true;
-            // 
             // radioButtonNonLinear
             // 
             this.radioButtonNonLinear.AutoSize = true;
@@ -144,6 +124,17 @@
             this.radioButtonNonLinear.TabStop = true;
             this.radioButtonNonLinear.Text = "Non-Linear";
             this.radioButtonNonLinear.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonLinear
+            // 
+            this.radioButtonLinear.AutoSize = true;
+            this.radioButtonLinear.Location = new System.Drawing.Point(6, 19);
+            this.radioButtonLinear.Name = "radioButtonLinear";
+            this.radioButtonLinear.Size = new System.Drawing.Size(54, 17);
+            this.radioButtonLinear.TabIndex = 6;
+            this.radioButtonLinear.TabStop = true;
+            this.radioButtonLinear.Text = "Linear";
+            this.radioButtonLinear.UseVisualStyleBackColor = true;
             // 
             // textBoxDefinition
             // 
@@ -228,7 +219,7 @@
             // 
             this.statusStripMessage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusMessage});
-            this.statusStripMessage.Location = new System.Drawing.Point(0, 428);
+            this.statusStripMessage.Location = new System.Drawing.Point(0, 411);
             this.statusStripMessage.Name = "statusStripMessage";
             this.statusStripMessage.Size = new System.Drawing.Size(479, 22);
             this.statusStripMessage.TabIndex = 14;
@@ -240,12 +231,22 @@
             this.statusMessage.Size = new System.Drawing.Size(53, 17);
             this.statusMessage.Text = "Message";
             // 
+            // columnHeaderName
+            // 
+            this.columnHeaderName.Text = "Name";
+            this.columnHeaderName.Width = 80;
+            // 
+            // columnHeaderCategory
+            // 
+            this.columnHeaderCategory.Text = "Category";
+            this.columnHeaderCategory.Width = 120;
+            // 
             // FormDataStructureMatrixAdvance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.CadetBlue;
-            this.ClientSize = new System.Drawing.Size(479, 450);
+            this.ClientSize = new System.Drawing.Size(479, 433);
             this.Controls.Add(this.statusStripMessage);
             this.Controls.Add(this.buttonAdd);
             this.Controls.Add(this.buttonModify);
@@ -275,8 +276,6 @@
         #endregion
 
         private System.Windows.Forms.ListView listViewDisplay;
-        private System.Windows.Forms.ColumnHeader Name;
-        private System.Windows.Forms.ColumnHeader Category;
         private System.Windows.Forms.Label labelName;
         private System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.ComboBox comboBoxCategory;
@@ -294,6 +293,8 @@
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.StatusStrip statusStripMessage;
         private System.Windows.Forms.ToolStripStatusLabel statusMessage;
+        private System.Windows.Forms.ColumnHeader columnHeaderName;
+        private System.Windows.Forms.ColumnHeader columnHeaderCategory;
     }
 }
 
