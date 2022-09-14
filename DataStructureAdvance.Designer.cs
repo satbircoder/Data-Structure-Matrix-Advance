@@ -40,7 +40,16 @@
             this.radioButtonNonLinear = new System.Windows.Forms.RadioButton();
             this.textBoxDefinition = new System.Windows.Forms.TextBox();
             this.labelDefinition = new System.Windows.Forms.Label();
+            this.buttonSearch = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.buttonOpen = new System.Windows.Forms.Button();
+            this.buttonDelete = new System.Windows.Forms.Button();
+            this.buttonModify = new System.Windows.Forms.Button();
+            this.buttonAdd = new System.Windows.Forms.Button();
+            this.statusStripMessage = new System.Windows.Forms.StatusStrip();
+            this.statusMessage = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBoxRadioButton.SuspendLayout();
+            this.statusStripMessage.SuspendLayout();
             this.SuspendLayout();
             // 
             // listViewDisplay
@@ -50,9 +59,9 @@
             this.Name,
             this.Category});
             this.listViewDisplay.HideSelection = false;
-            this.listViewDisplay.Location = new System.Drawing.Point(323, 12);
+            this.listViewDisplay.Location = new System.Drawing.Point(258, 12);
             this.listViewDisplay.Name = "listViewDisplay";
-            this.listViewDisplay.Size = new System.Drawing.Size(193, 360);
+            this.listViewDisplay.Size = new System.Drawing.Size(203, 360);
             this.listViewDisplay.TabIndex = 0;
             this.listViewDisplay.UseCompatibleStateImageBehavior = false;
             this.listViewDisplay.View = System.Windows.Forms.View.Details;
@@ -141,7 +150,7 @@
             this.textBoxDefinition.Location = new System.Drawing.Point(25, 270);
             this.textBoxDefinition.Multiline = true;
             this.textBoxDefinition.Name = "textBoxDefinition";
-            this.textBoxDefinition.Size = new System.Drawing.Size(292, 102);
+            this.textBoxDefinition.Size = new System.Drawing.Size(227, 102);
             this.textBoxDefinition.TabIndex = 6;
             // 
             // labelDefinition
@@ -154,12 +163,96 @@
             this.labelDefinition.TabIndex = 7;
             this.labelDefinition.Text = "Definition";
             // 
+            // buttonSearch
+            // 
+            this.buttonSearch.BackColor = System.Drawing.Color.DarkGray;
+            this.buttonSearch.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonSearch.Location = new System.Drawing.Point(177, 28);
+            this.buttonSearch.Name = "buttonSearch";
+            this.buttonSearch.Size = new System.Drawing.Size(75, 31);
+            this.buttonSearch.TabIndex = 8;
+            this.buttonSearch.Text = "SEARCH";
+            this.buttonSearch.UseVisualStyleBackColor = false;
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.BackColor = System.Drawing.Color.DarkGray;
+            this.buttonSave.Location = new System.Drawing.Point(339, 378);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(75, 31);
+            this.buttonSave.TabIndex = 9;
+            this.buttonSave.Text = "SAVE";
+            this.buttonSave.UseVisualStyleBackColor = false;
+            // 
+            // buttonOpen
+            // 
+            this.buttonOpen.BackColor = System.Drawing.Color.DarkGray;
+            this.buttonOpen.Location = new System.Drawing.Point(258, 378);
+            this.buttonOpen.Name = "buttonOpen";
+            this.buttonOpen.Size = new System.Drawing.Size(75, 31);
+            this.buttonOpen.TabIndex = 10;
+            this.buttonOpen.Text = "OPEN";
+            this.buttonOpen.UseVisualStyleBackColor = false;
+            // 
+            // buttonDelete
+            // 
+            this.buttonDelete.BackColor = System.Drawing.Color.DarkGray;
+            this.buttonDelete.Location = new System.Drawing.Point(177, 192);
+            this.buttonDelete.Name = "buttonDelete";
+            this.buttonDelete.Size = new System.Drawing.Size(75, 31);
+            this.buttonDelete.TabIndex = 11;
+            this.buttonDelete.Text = "DELETE";
+            this.buttonDelete.UseVisualStyleBackColor = false;
+            // 
+            // buttonModify
+            // 
+            this.buttonModify.BackColor = System.Drawing.Color.DarkGray;
+            this.buttonModify.Location = new System.Drawing.Point(177, 137);
+            this.buttonModify.Name = "buttonModify";
+            this.buttonModify.Size = new System.Drawing.Size(75, 31);
+            this.buttonModify.TabIndex = 12;
+            this.buttonModify.Text = "MODIFY";
+            this.buttonModify.UseVisualStyleBackColor = false;
+            // 
+            // buttonAdd
+            // 
+            this.buttonAdd.BackColor = System.Drawing.Color.DarkGray;
+            this.buttonAdd.Location = new System.Drawing.Point(177, 79);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(75, 31);
+            this.buttonAdd.TabIndex = 13;
+            this.buttonAdd.Text = "ADD";
+            this.buttonAdd.UseVisualStyleBackColor = false;
+            // 
+            // statusStripMessage
+            // 
+            this.statusStripMessage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusMessage});
+            this.statusStripMessage.Location = new System.Drawing.Point(0, 428);
+            this.statusStripMessage.Name = "statusStripMessage";
+            this.statusStripMessage.Size = new System.Drawing.Size(479, 22);
+            this.statusStripMessage.TabIndex = 14;
+            this.statusStripMessage.Text = "statusStrip1";
+            // 
+            // statusMessage
+            // 
+            this.statusMessage.Name = "statusMessage";
+            this.statusMessage.Size = new System.Drawing.Size(53, 17);
+            this.statusMessage.Text = "Message";
+            // 
             // FormDataStructureMatrixAdvance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.CadetBlue;
-            this.ClientSize = new System.Drawing.Size(528, 450);
+            this.ClientSize = new System.Drawing.Size(479, 450);
+            this.Controls.Add(this.statusStripMessage);
+            this.Controls.Add(this.buttonAdd);
+            this.Controls.Add(this.buttonModify);
+            this.Controls.Add(this.buttonDelete);
+            this.Controls.Add(this.buttonOpen);
+            this.Controls.Add(this.buttonSave);
+            this.Controls.Add(this.buttonSearch);
             this.Controls.Add(this.labelDefinition);
             this.Controls.Add(this.textBoxDefinition);
             this.Controls.Add(this.groupBoxRadioButton);
@@ -172,6 +265,8 @@
             this.Text = "Data Structure Matrix Advance";
             this.groupBoxRadioButton.ResumeLayout(false);
             this.groupBoxRadioButton.PerformLayout();
+            this.statusStripMessage.ResumeLayout(false);
+            this.statusStripMessage.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -191,6 +286,14 @@
         private System.Windows.Forms.RadioButton radioButtonLinear;
         private System.Windows.Forms.TextBox textBoxDefinition;
         private System.Windows.Forms.Label labelDefinition;
+        private System.Windows.Forms.Button buttonSearch;
+        private System.Windows.Forms.Button buttonSave;
+        private System.Windows.Forms.Button buttonOpen;
+        private System.Windows.Forms.Button buttonDelete;
+        private System.Windows.Forms.Button buttonModify;
+        private System.Windows.Forms.Button buttonAdd;
+        private System.Windows.Forms.StatusStrip statusStripMessage;
+        private System.Windows.Forms.ToolStripStatusLabel statusMessage;
     }
 }
 
