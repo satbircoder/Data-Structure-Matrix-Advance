@@ -30,6 +30,7 @@ namespace Data_Structure_Matrix_Advance
                 ListViewDisplay.Items.Add(lvItem);
                 
             }
+            
         }
 
         private void ClearInput()
@@ -53,6 +54,7 @@ namespace Data_Structure_Matrix_Advance
         {
             ListLoader();
             DisplayList();
+            
         }
         private void ListLoader()// Loaded list using Class Constructor
         {
@@ -184,20 +186,36 @@ namespace Data_Structure_Matrix_Advance
         #region Delete
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
-            if(ListViewDisplay.SelectedItems != null)
+            if (ListViewDisplay.FocusedItem != null)
             {
-                for(int i = 0; i < wikiStorageList.Count; i++)
+                for (int i = 0; i < wikiStorageList.Count; i++)
                 {
-                    if(ListViewDisplay.Items[i].Selected)
+                    if (ListViewDisplay.Items[i].Selected)
                     {
-                        MessageBox.Show("Are You Sure You want to delete "+wikiStorageList[i].GetName(), "System Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        wikiStorageList.RemoveAt(i);
+                        var confirmation = MessageBox.Show("Are You Sure You want to delete " + wikiStorageList[i].GetName(), "System Information", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if(confirmation == DialogResult.Yes)
+                        {
+                            wikiStorageList.RemoveAt(i);
+                            break;
+                        }
+                        else
+                        {
+                            StatusMessage.Text = "User Has Canceled to delete";
+                            break;
+                        }
                         
-                        break;
                     }
-                    
                 }
             }
+            else
+            {
+                MessageBox.Show("Select the item from the list", "Delete Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+
+            
+            
+           
             DisplayList();
             ClearInput();
         }
