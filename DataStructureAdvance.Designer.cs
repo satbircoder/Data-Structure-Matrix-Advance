@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDataStructureMatrixAdvance));
             this.ListViewDisplay = new System.Windows.Forms.ListView();
             this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderCategory = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -56,14 +57,18 @@
             // ListViewDisplay
             // 
             this.ListViewDisplay.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.ListViewDisplay.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ListViewDisplay.BackgroundImage")));
+            this.ListViewDisplay.BackgroundImageTiled = true;
             this.ListViewDisplay.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderName,
             this.columnHeaderCategory});
+            this.ListViewDisplay.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ListViewDisplay.ForeColor = System.Drawing.Color.White;
             this.ListViewDisplay.FullRowSelect = true;
             this.ListViewDisplay.HideSelection = false;
             this.ListViewDisplay.Location = new System.Drawing.Point(258, 12);
             this.ListViewDisplay.Name = "ListViewDisplay";
-            this.ListViewDisplay.Size = new System.Drawing.Size(209, 360);
+            this.ListViewDisplay.Size = new System.Drawing.Size(221, 360);
             this.ListViewDisplay.TabIndex = 0;
             this.ListViewDisplay.UseCompatibleStateImageBehavior = false;
             this.ListViewDisplay.View = System.Windows.Forms.View.Details;
@@ -72,7 +77,7 @@
             // columnHeaderName
             // 
             this.columnHeaderName.Text = "Name";
-            this.columnHeaderName.Width = 125;
+            this.columnHeaderName.Width = 135;
             // 
             // columnHeaderCategory
             // 
@@ -207,6 +212,7 @@
             this.ButtonDelete.TabIndex = 11;
             this.ButtonDelete.Text = "DELETE";
             this.ButtonDelete.UseVisualStyleBackColor = false;
+            this.ButtonDelete.Click += new System.EventHandler(this.ButtonDelete_Click);
             // 
             // ButtonModify
             // 
@@ -261,6 +267,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.CadetBlue;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(479, 433);
             this.Controls.Add(this.ButtonClear);
             this.Controls.Add(this.statusStripMessage);

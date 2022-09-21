@@ -181,6 +181,31 @@ namespace Data_Structure_Matrix_Advance
 
         #endregion Duplicate Check
 
+        #region Delete
+        private void ButtonDelete_Click(object sender, EventArgs e)
+        {
+            if(ListViewDisplay.SelectedItems != null)
+            {
+                Information deleteInformation = new Information();
+                deleteInformation.SetName(TextBoxName.Text);
+                deleteInformation.SetCategory(ComboBoxCategory.Text);
+                deleteInformation.SetStructure(GetRadioButton());
+                deleteInformation.SetDefinition(TextBoxDefinition.Text);
+                wikiStorageList.Remove(deleteInformation);
+                
+
+
+               /* foreach(var item in wikiStorageList)
+                {
+                    if(item.GetName().Equals(TextBoxName.Text)
+                        && item.GetCategory().Equals(ComboBoxCategory.Text))
+                }*/
+            }
+            DisplayList();
+            ClearInput();
+        }
+
+        #endregion Delete
     }
 
 }
