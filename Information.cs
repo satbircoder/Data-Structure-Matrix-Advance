@@ -31,7 +31,7 @@ namespace Data_Structure_Matrix_Advance
         }
         public void SetName(string aName)
         {
-            name = aName;
+            name = aName.ToUpper();
         }
         public string GetCategory()
         {

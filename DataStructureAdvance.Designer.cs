@@ -62,13 +62,13 @@
             this.ListViewDisplay.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderName,
             this.columnHeaderCategory});
-            this.ListViewDisplay.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ListViewDisplay.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ListViewDisplay.ForeColor = System.Drawing.Color.White;
             this.ListViewDisplay.FullRowSelect = true;
             this.ListViewDisplay.HideSelection = false;
             this.ListViewDisplay.Location = new System.Drawing.Point(258, 12);
             this.ListViewDisplay.Name = "ListViewDisplay";
-            this.ListViewDisplay.Size = new System.Drawing.Size(221, 360);
+            this.ListViewDisplay.Size = new System.Drawing.Size(238, 360);
             this.ListViewDisplay.TabIndex = 0;
             this.ListViewDisplay.UseCompatibleStateImageBehavior = false;
             this.ListViewDisplay.View = System.Windows.Forms.View.Details;
@@ -77,12 +77,12 @@
             // columnHeaderName
             // 
             this.columnHeaderName.Text = "Name";
-            this.columnHeaderName.Width = 135;
+            this.columnHeaderName.Width = 162;
             // 
             // columnHeaderCategory
             // 
             this.columnHeaderCategory.Text = "Category";
-            this.columnHeaderCategory.Width = 80;
+            this.columnHeaderCategory.Width = 72;
             // 
             // labelName
             // 
@@ -109,6 +109,7 @@
             this.ComboBoxCategory.Location = new System.Drawing.Point(25, 95);
             this.ComboBoxCategory.Name = "ComboBoxCategory";
             this.ComboBoxCategory.Size = new System.Drawing.Size(128, 21);
+            this.ComboBoxCategory.Sorted = true;
             this.ComboBoxCategory.TabIndex = 3;
             // 
             // labelCategory
@@ -182,6 +183,7 @@
             this.ButtonSearch.TabIndex = 8;
             this.ButtonSearch.Text = "SEARCH";
             this.ButtonSearch.UseVisualStyleBackColor = false;
+            this.ButtonSearch.Click += new System.EventHandler(this.ButtonSearch_Click);
             // 
             // ButtonSave
             // 
@@ -242,7 +244,7 @@
             this.StatusMessage});
             this.statusStripMessage.Location = new System.Drawing.Point(0, 411);
             this.statusStripMessage.Name = "statusStripMessage";
-            this.statusStripMessage.Size = new System.Drawing.Size(479, 22);
+            this.statusStripMessage.Size = new System.Drawing.Size(496, 22);
             this.statusStripMessage.TabIndex = 14;
             this.statusStripMessage.Text = "statusStrip1";
             // 
@@ -269,7 +271,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.CadetBlue;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(479, 433);
+            this.ClientSize = new System.Drawing.Size(496, 433);
             this.Controls.Add(this.ButtonClear);
             this.Controls.Add(this.statusStripMessage);
             this.Controls.Add(this.ButtonAdd);

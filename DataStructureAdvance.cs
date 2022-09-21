@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Data_Structure_Matrix_Advance
 {
@@ -31,6 +32,7 @@ namespace Data_Structure_Matrix_Advance
                 
             }
             
+
         }
 
         private void ClearInput()
@@ -55,12 +57,14 @@ namespace Data_Structure_Matrix_Advance
             ListLoader();
             DisplayList();
             CategoryLoad();
+                     
         }
+
         private void CategoryLoad()
         {
-            if(System.IO.File.Exists("Category.txt"))
+            if(File.Exists("Category.txt"))
                 {
-                string[] category = System.IO.File.ReadAllLines("Category.txt");
+                string[] category = File.ReadAllLines("Category.txt");
                 foreach (var item in category)
                 {
                     ComboBoxCategory.Items.Add(item);
@@ -70,8 +74,6 @@ namespace Data_Structure_Matrix_Advance
             {
                 StatusMessage.Text = "File is not available to load";
             }
-
-            
         }
         private void ListLoader()// Loaded list using Class Constructor
         {
@@ -108,12 +110,21 @@ namespace Data_Structure_Matrix_Advance
         {
             if(DuplicateCheck() == false)
             {
-                Information addInformation = new Information();
-                addInformation.SetName(TextBoxName.Text);
-                addInformation.SetCategory(ComboBoxCategory.Text);
-                addInformation.SetStructure(GetRadioButton());
-                addInformation.SetDefinition(TextBoxDefinition.Text);
-                wikiStorageList.Add(addInformation);
+                if(!string.IsNullOrEmpty(TextBoxName.Text) && !string.IsNullOrEmpty(ComboBoxCategory.Text) 
+                         && !string.IsNullOrEmpty(GetRadioButton()) && !string.IsNullOrEmpty(TextBoxDefinition.Text))
+                {
+                    Information addInformation = new Information();
+                    addInformation.SetName(TextBoxName.Text);
+                    addInformation.SetCategory(ComboBoxCategory.Text);
+                    addInformation.SetStructure(GetRadioButton());
+                    addInformation.SetDefinition(TextBoxDefinition.Text);
+                    wikiStorageList.Add(addInformation);
+                }
+                else
+                {
+                    StatusMessage.Text = "All Fields Must Have Data in it to add";
+                }
+                
             }
             else
             {
@@ -227,7 +238,7 @@ namespace Data_Structure_Matrix_Advance
             }
             else
             {
-                MessageBox.Show("Select the item from the list and none of the ", "Delete Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Select the item from the list and none of the data field should be empty", "Delete Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
 
@@ -240,6 +251,7 @@ namespace Data_Structure_Matrix_Advance
 
         #endregion Delete
 
+        #region Modify
         private void ButtonModify_Click(object sender, EventArgs e)
         {
             int currentItem = ListViewDisplay.SelectedIndices[0];
@@ -249,6 +261,38 @@ namespace Data_Structure_Matrix_Advance
             wikiStorageList[currentItem].SetDefinition(TextBoxDefinition.Text);
             DisplayList();
         }
+
+        #endregion Modify
+
+        #region Search
+        private void ButtonSearch_Click(object sender, EventArgs e)
+        {
+            if(!string.IsNullOrEmpty(TextBoxName.Text))
+            {
+                Information findData = new Information();
+                findData.SetName(TextBoxName.Text.ToUpper());
+                int found = wikiStorageList.BinarySearch(findData);
+                if(found >= 0)
+                {
+                    ListViewDisplay.SelectedItems.Clear();
+                    ListViewDisplay.Items[found].Selected = true;
+                    ListViewDisplay.Focus();
+                    TextBoxName.Text = wikiStorageList[found].GetName();
+                    ComboBoxCategory.Text = wikiStorageList[found].GetCategory();
+                    SetRadioButton(found);
+                    TextBoxDefinition.Text = wikiStorageList[found].GetDefinition();
+
+                }
+                else
+                {
+                    StatusMessage.Text = "NOt in the List";
+                }
+            }
+            
+
+        }
+
+        #endregion Search
     }
 
 }
