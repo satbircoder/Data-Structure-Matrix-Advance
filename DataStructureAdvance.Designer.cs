@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.listViewDisplay = new System.Windows.Forms.ListView();
+            this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderCategory = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.labelName = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.comboBoxCategory = new System.Windows.Forms.ComboBox();
@@ -46,8 +48,6 @@
             this.buttonAdd = new System.Windows.Forms.Button();
             this.statusStripMessage = new System.Windows.Forms.StatusStrip();
             this.statusMessage = new System.Windows.Forms.ToolStripStatusLabel();
-            this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderCategory = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBoxRadioButton.SuspendLayout();
             this.statusStripMessage.SuspendLayout();
             this.SuspendLayout();
@@ -65,6 +65,17 @@
             this.listViewDisplay.TabIndex = 0;
             this.listViewDisplay.UseCompatibleStateImageBehavior = false;
             this.listViewDisplay.View = System.Windows.Forms.View.Details;
+            this.listViewDisplay.Click += new System.EventHandler(this.listViewDisplay_Click);
+            // 
+            // columnHeaderName
+            // 
+            this.columnHeaderName.Text = "Name";
+            this.columnHeaderName.Width = 80;
+            // 
+            // columnHeaderCategory
+            // 
+            this.columnHeaderCategory.Text = "Category";
+            this.columnHeaderCategory.Width = 120;
             // 
             // labelName
             // 
@@ -214,6 +225,7 @@
             this.buttonAdd.TabIndex = 13;
             this.buttonAdd.Text = "ADD";
             this.buttonAdd.UseVisualStyleBackColor = false;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
             // statusStripMessage
             // 
@@ -230,16 +242,6 @@
             this.statusMessage.Name = "statusMessage";
             this.statusMessage.Size = new System.Drawing.Size(53, 17);
             this.statusMessage.Text = "Message";
-            // 
-            // columnHeaderName
-            // 
-            this.columnHeaderName.Text = "Name";
-            this.columnHeaderName.Width = 80;
-            // 
-            // columnHeaderCategory
-            // 
-            this.columnHeaderCategory.Text = "Category";
-            this.columnHeaderCategory.Width = 120;
             // 
             // FormDataStructureMatrixAdvance
             // 
