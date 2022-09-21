@@ -54,7 +54,6 @@ namespace Data_Structure_Matrix_Advance
         {
             ListLoader();
             DisplayList();
-            
         }
         private void ListLoader()// Loaded list using Class Constructor
         {
