@@ -54,6 +54,24 @@ namespace Data_Structure_Matrix_Advance
         {
             ListLoader();
             DisplayList();
+            CategoryLoad();
+        }
+        private void CategoryLoad()
+        {
+            if(System.IO.File.Exists("Category.txt"))
+                {
+                string[] category = System.IO.File.ReadAllLines("Category.txt");
+                foreach (var item in category)
+                {
+                    ComboBoxCategory.Items.Add(item);
+                }
+            }
+            else
+            {
+                StatusMessage.Text = "File is not available to load";
+            }
+
+            
         }
         private void ListLoader()// Loaded list using Class Constructor
         {
@@ -224,7 +242,12 @@ namespace Data_Structure_Matrix_Advance
 
         private void ButtonModify_Click(object sender, EventArgs e)
         {
-
+            int currentItem = ListViewDisplay.SelectedIndices[0];
+            wikiStorageList[currentItem].SetName(TextBoxName.Text);
+            wikiStorageList[currentItem].SetCategory(ComboBoxCategory.Text);
+            wikiStorageList[currentItem].SetStructure(GetRadioButton());
+            wikiStorageList[currentItem].SetDefinition(TextBoxDefinition.Text);
+            DisplayList();
         }
     }
 
