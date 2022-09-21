@@ -17,6 +17,14 @@ namespace Data_Structure_Matrix_Advance
         {
 
         }
+        public Information(string newName, string newCategory, string newStructure, string newDefinition)
+        {
+            SetName(newName);
+            SetCategory(newCategory);
+            SetStructure(newStructure);
+            SetDefinition(newDefinition);
+        }
+                
         public string GetName()
         {
             return name;
