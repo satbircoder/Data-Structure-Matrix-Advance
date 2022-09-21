@@ -223,6 +223,7 @@
             this.ButtonModify.TabIndex = 12;
             this.ButtonModify.Text = "MODIFY";
             this.ButtonModify.UseVisualStyleBackColor = false;
+            this.ButtonModify.Click += new System.EventHandler(this.ButtonModify_Click);
             // 
             // ButtonAdd
             // 

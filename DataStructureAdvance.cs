@@ -185,7 +185,8 @@ namespace Data_Structure_Matrix_Advance
         #region Delete
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
-            if (ListViewDisplay.FocusedItem != null)
+            if (ListViewDisplay.FocusedItem != null && TextBoxName.Text != "" && ComboBoxCategory.Text != "" && TextBoxDefinition.Text != "" 
+                && GetRadioButton() != null)
             {
                 for (int i = 0; i < wikiStorageList.Count; i++)
                 {
@@ -208,7 +209,7 @@ namespace Data_Structure_Matrix_Advance
             }
             else
             {
-                MessageBox.Show("Select the item from the list", "Delete Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Select the item from the list and none of the ", "Delete Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
 
@@ -220,6 +221,11 @@ namespace Data_Structure_Matrix_Advance
         }
 
         #endregion Delete
+
+        private void ButtonModify_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }
