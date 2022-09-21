@@ -186,20 +186,17 @@ namespace Data_Structure_Matrix_Advance
         {
             if(ListViewDisplay.SelectedItems != null)
             {
-                Information deleteInformation = new Information();
-                deleteInformation.SetName(TextBoxName.Text);
-                deleteInformation.SetCategory(ComboBoxCategory.Text);
-                deleteInformation.SetStructure(GetRadioButton());
-                deleteInformation.SetDefinition(TextBoxDefinition.Text);
-                wikiStorageList.Remove(deleteInformation);
-                
-
-
-               /* foreach(var item in wikiStorageList)
+                for(int i = 0; i < wikiStorageList.Count; i++)
                 {
-                    if(item.GetName().Equals(TextBoxName.Text)
-                        && item.GetCategory().Equals(ComboBoxCategory.Text))
-                }*/
+                    if(ListViewDisplay.Items[i].Selected)
+                    {
+                        MessageBox.Show("Are You Sure You want to delete "+wikiStorageList[i].GetName(), "System Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        wikiStorageList.RemoveAt(i);
+                        
+                        break;
+                    }
+                    
+                }
             }
             DisplayList();
             ClearInput();
