@@ -112,6 +112,7 @@
             this.ComboBoxCategory.Size = new System.Drawing.Size(128, 21);
             this.ComboBoxCategory.Sorted = true;
             this.ComboBoxCategory.TabIndex = 3;
+            this.ComboBoxCategory.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ComboBoxCategory_KeyPress);
             // 
             // labelCategory
             // 
@@ -163,6 +164,7 @@
             this.TextBoxDefinition.Name = "TextBoxDefinition";
             this.TextBoxDefinition.Size = new System.Drawing.Size(227, 102);
             this.TextBoxDefinition.TabIndex = 6;
+            this.TextBoxDefinition.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBoxDefinition_KeyPress);
             // 
             // labelDefinition
             // 

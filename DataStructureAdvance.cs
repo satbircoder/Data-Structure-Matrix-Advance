@@ -47,6 +47,7 @@ namespace Data_Structure_Matrix_Advance
             {
                 rb.Checked = false;
             }
+            ListViewDisplay.SelectedItems.Clear();
         }
         private void ButtonClear_Click(object sender, EventArgs e)
         {
@@ -74,8 +75,18 @@ namespace Data_Structure_Matrix_Advance
             {
                 StatusMessage.Text = "";
             }
-           
-
+        }
+        private bool InputStringCheck()
+        {
+            if(!string.IsNullOrEmpty(TextBoxName.Text) && !string.IsNullOrEmpty(TextBoxDefinition.Text) 
+                && !string.IsNullOrEmpty(ComboBoxCategory.Text) && !string.IsNullOrEmpty(GetRadioButton()))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         private void CategoryLoad()
         {
@@ -127,8 +138,7 @@ namespace Data_Structure_Matrix_Advance
         {
             if(DuplicateCheck() == false)
             {
-                if(!string.IsNullOrEmpty(TextBoxName.Text) && !string.IsNullOrEmpty(ComboBoxCategory.Text) 
-                         && !string.IsNullOrEmpty(GetRadioButton()) && !string.IsNullOrEmpty(TextBoxDefinition.Text))
+                if(InputStringCheck() == true)
                 {
                     Information addInformation = new Information();
                     addInformation.SetName(TextBoxName.Text);
@@ -136,6 +146,7 @@ namespace Data_Structure_Matrix_Advance
                     addInformation.SetStructure(GetRadioButton());
                     addInformation.SetDefinition(TextBoxDefinition.Text);
                     wikiStorageList.Add(addInformation);
+                    DisplayList();
                 }
                 else
                 {
@@ -143,12 +154,11 @@ namespace Data_Structure_Matrix_Advance
                 }
                 
             }
+
             else
             {
                 StatusMessage.Text = "Already Exists";
             }
-            
-            DisplayList();
             ClearInput();
         }
 
@@ -213,7 +223,7 @@ namespace Data_Structure_Matrix_Advance
             bool found = false;
             foreach(var item in wikiStorageList)
             {
-                if(item.GetName() == TextBoxName.Text)
+                if(item.GetName() == TextBoxName.Text && item.GetCategory() == ComboBoxCategory.Text)
                 {
                     found = true;
                     break;
@@ -231,38 +241,39 @@ namespace Data_Structure_Matrix_Advance
         #region Delete
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
-            if (ListViewDisplay.FocusedItem != null && TextBoxName.Text != "" && ComboBoxCategory.Text != "" && TextBoxDefinition.Text != "" 
-                && GetRadioButton() != null)
+            if (ListViewDisplay.FocusedItem != null || !string.IsNullOrEmpty(TextBoxName.Text))
             {
-                for (int i = 0; i < wikiStorageList.Count; i++)
+                for(int i = 0; i < wikiStorageList.Count; i++)
                 {
-                    if (ListViewDisplay.Items[i].Selected)
+                    if (ListViewDisplay.Items[i].Selected || TextBoxName.Text.ToUpper().Equals(wikiStorageList[i].GetName()))
                     {
                         var confirmation = MessageBox.Show("Are You Sure You want to delete " + wikiStorageList[i].GetName(), "System Information", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                         if(confirmation == DialogResult.Yes)
                         {
+                            StatusMessage.Text = wikiStorageList[i].GetName() + " Has Been Deleted Successfully";
                             wikiStorageList.RemoveAt(i);
                             break;
                         }
                         else
                         {
-                            StatusMessage.Text = "User Has Canceled to delete";
-                            break;
+                            StatusMessage.Text = "User Has Canceled to Delete";
                         }
-                        
+                         
+                    }
+                    
+                    else
+                    {
+                        StatusMessage.Text = "Item not in the List";
                     }
                 }
+                DisplayList();
             }
             else
             {
-                MessageBox.Show("Select the item from the list and none of the data field should be empty", "Delete Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+                MessageBox.Show("Select The Item from the List OR Enter the name of the item in Name TextBox to delete",
+                    "Delete Information",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
-
             
-            
-           
-            DisplayList();
             ClearInput();
         }
 
@@ -411,12 +422,22 @@ namespace Data_Structure_Matrix_Advance
 
         #endregion Open
 
+        #region Invalid Character 
         private void TextBoxName_KeyPress(object sender, KeyPressEventArgs e)
         {
             Key_Press(sender,e);
         }
+        private void ComboBoxCategory_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Key_Press(sender, e);
+        }
 
-        
+        private void TextBoxDefinition_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Key_Press(sender, e);
+        }
+        #endregion Invalid Character
+
     }
 
 }
