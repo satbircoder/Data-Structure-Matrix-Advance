@@ -20,6 +20,7 @@ namespace Data_Structure_Matrix_Advance
             InitializeComponent();
         }
         List<Information> wikiStorageList = new List<Information>();
+        string fileName = "Definition.bin";
 
         #region Utilities
         public void DisplayList()
@@ -317,7 +318,45 @@ namespace Data_Structure_Matrix_Advance
         #endregion Search
 
         #region Save
+        private void ButtonSave_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.InitialDirectory = Application.StartupPath;
+            saveFileDialog.Filter = "BIN |*.bin";
+            saveFileDialog.Title = "Save Binary File";
+            DialogResult dr = saveFileDialog.ShowDialog();
+            if(dr.Equals(DialogResult.Cancel))
+            {
+                saveFileDialog.FileName = fileName;
+                StatusMessage.Text = "File Has been Saved with Default Name As " +Path.GetFileName(this.fileName);
+            }
+            if(dr.Equals(DialogResult.OK))
+            {
+                fileName = saveFileDialog.FileName;
+                StatusMessage.Text = "File Has been saved with " +Path.GetFileName(fileName);
+            }
+            try
+            {
+                using (var stream = File.Open(fileName,FileMode.Create))
+                {
+                    using(var writer = new BinaryWriter(stream, Encoding.UTF8,false))
+                    {
+                        foreach(var item in wikiStorageList)
+                        {
+                            writer.Write(item.GetName());
+                            writer.Write(item.GetCategory());
+                            writer.Write(item.GetStructure());
+                            writer.Write(item.GetDefinition());
+                        }
+                    }
+                }
+            }
+            catch(IOException)
+            {
+                MessageBox.Show("Unable to Save File", "Save Information",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            }
 
+        }
 
 
 
@@ -325,11 +364,59 @@ namespace Data_Structure_Matrix_Advance
 
         #endregion Save
 
+        #region Open
+        private void ButtonOpen_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = Application.StartupPath;
+            openFileDialog.Filter = "BIN |*.bin";
+            openFileDialog.Title = "Open Saved File";
+            DialogResult or = openFileDialog.ShowDialog();
+            if(or.Equals(DialogResult.OK))
+            {
+                fileName = openFileDialog.FileName;
+                StatusMessage.Text = Path.GetFileName(fileName) + " Has Been Loaded";
+            }
+            if(or.Equals(DialogResult.Cancel))
+            {
+                StatusMessage.Text = "User Has Canceled to Open File";
+            }
+            try
+            {
+                wikiStorageList.Clear();
+                using(Stream stream = File.Open(fileName,FileMode.Open))
+                {
+                    using (var reader = new BinaryReader(stream, Encoding.UTF8,false))
+                    {
+                        while(stream.Position < stream.Length)
+                        {
+                            Information newDefinition = new Information();
+                            newDefinition.SetName(reader.ReadString());
+                            newDefinition.SetCategory(reader.ReadString());
+                            newDefinition.SetStructure(reader.ReadString());
+                            newDefinition.SetDefinition(reader.ReadString());
+                            wikiStorageList.Add(newDefinition);
+                        }
+
+                    }
+
+                }
+                DisplayList();
+            }
+            catch(IOException)
+            {
+                MessageBox.Show("Unable to Open FIle", "Open File Information", MessageBoxButtons.OK,MessageBoxIcon.Error);
+            }
+        }
+
+        #endregion Open
+
         private void TextBoxName_KeyPress(object sender, KeyPressEventArgs e)
         {
             Key_Press(sender,e);
-           
         }
+
+        
     }
 
 }

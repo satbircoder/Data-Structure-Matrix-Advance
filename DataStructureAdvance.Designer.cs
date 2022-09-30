@@ -195,6 +195,7 @@
             this.ButtonSave.TabIndex = 9;
             this.ButtonSave.Text = "SAVE";
             this.ButtonSave.UseVisualStyleBackColor = false;
+            this.ButtonSave.Click += new System.EventHandler(this.ButtonSave_Click);
             // 
             // ButtonOpen
             // 
@@ -205,6 +206,7 @@
             this.ButtonOpen.TabIndex = 10;
             this.ButtonOpen.Text = "OPEN";
             this.ButtonOpen.UseVisualStyleBackColor = false;
+            this.ButtonOpen.Click += new System.EventHandler(this.ButtonOpen_Click);
             // 
             // ButtonDelete
             // 
