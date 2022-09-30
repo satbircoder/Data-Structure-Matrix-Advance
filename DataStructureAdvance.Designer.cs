@@ -101,6 +101,7 @@
             this.TextBoxName.Name = "TextBoxName";
             this.TextBoxName.Size = new System.Drawing.Size(128, 31);
             this.TextBoxName.TabIndex = 2;
+            this.TextBoxName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBoxName_KeyPress);
             // 
             // ComboBoxCategory
             // 

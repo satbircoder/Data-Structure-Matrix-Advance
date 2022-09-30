@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+
 using System.IO;
 
 namespace Data_Structure_Matrix_Advance
@@ -59,7 +61,21 @@ namespace Data_Structure_Matrix_Advance
             CategoryLoad();
                      
         }
+        private void Key_Press(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = e.KeyChar == (char)Keys.ControlKey || e.KeyChar != (char)Keys.Back && !char.IsLetter(e.KeyChar) && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar);
+            
+            if(e.Handled.Equals(true))
+            {
+                StatusMessage.Text = "Invalid Input"; 
+            }
+            else
+            {
+                StatusMessage.Text = "";
+            }
+           
 
+        }
         private void CategoryLoad()
         {
             if(File.Exists("Category.txt"))
@@ -254,12 +270,13 @@ namespace Data_Structure_Matrix_Advance
         #region Modify
         private void ButtonModify_Click(object sender, EventArgs e)
         {
-            int currentItem = ListViewDisplay.SelectedIndices[0];
+            int currentItem = ListViewDisplay.FocusedItem.Index;
             wikiStorageList[currentItem].SetName(TextBoxName.Text);
             wikiStorageList[currentItem].SetCategory(ComboBoxCategory.Text);
             wikiStorageList[currentItem].SetStructure(GetRadioButton());
             wikiStorageList[currentItem].SetDefinition(TextBoxDefinition.Text);
             DisplayList();
+            ClearInput();
         }
 
         #endregion Modify
@@ -285,14 +302,34 @@ namespace Data_Structure_Matrix_Advance
                 }
                 else
                 {
-                    StatusMessage.Text = "NOt in the List";
+                    StatusMessage.Text = "Not in the List";
                 }
+            }
+            else
+            {
+                MessageBox.Show("Enter the Name in Search Box","Search Informatio",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
             
 
         }
 
+
         #endregion Search
+
+        #region Save
+
+
+
+
+
+
+        #endregion Save
+
+        private void TextBoxName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Key_Press(sender,e);
+           
+        }
     }
 
 }
