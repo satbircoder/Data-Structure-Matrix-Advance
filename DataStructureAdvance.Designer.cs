@@ -68,7 +68,7 @@
             this.ListViewDisplay.HideSelection = false;
             this.ListViewDisplay.Location = new System.Drawing.Point(258, 12);
             this.ListViewDisplay.Name = "ListViewDisplay";
-            this.ListViewDisplay.Size = new System.Drawing.Size(238, 360);
+            this.ListViewDisplay.Size = new System.Drawing.Size(248, 360);
             this.ListViewDisplay.TabIndex = 0;
             this.ListViewDisplay.UseCompatibleStateImageBehavior = false;
             this.ListViewDisplay.View = System.Windows.Forms.View.Details;
@@ -82,7 +82,7 @@
             // columnHeaderCategory
             // 
             this.columnHeaderCategory.Text = "Category";
-            this.columnHeaderCategory.Width = 72;
+            this.columnHeaderCategory.Width = 80;
             // 
             // labelName
             // 
@@ -101,6 +101,7 @@
             this.TextBoxName.Name = "TextBoxName";
             this.TextBoxName.Size = new System.Drawing.Size(128, 31);
             this.TextBoxName.TabIndex = 2;
+            this.TextBoxName.TextChanged += new System.EventHandler(this.TextBoxName_TextChanged);
             this.TextBoxName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBoxName_KeyPress);
             // 
             // ComboBoxCategory
@@ -164,7 +165,6 @@
             this.TextBoxDefinition.Name = "TextBoxDefinition";
             this.TextBoxDefinition.Size = new System.Drawing.Size(227, 102);
             this.TextBoxDefinition.TabIndex = 6;
-            this.TextBoxDefinition.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBoxDefinition_KeyPress);
             // 
             // labelDefinition
             // 
@@ -249,7 +249,7 @@
             this.StatusMessage});
             this.statusStripMessage.Location = new System.Drawing.Point(0, 411);
             this.statusStripMessage.Name = "statusStripMessage";
-            this.statusStripMessage.Size = new System.Drawing.Size(496, 22);
+            this.statusStripMessage.Size = new System.Drawing.Size(506, 22);
             this.statusStripMessage.TabIndex = 14;
             this.statusStripMessage.Text = "statusStrip1";
             // 
@@ -276,7 +276,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.CadetBlue;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(496, 433);
+            this.ClientSize = new System.Drawing.Size(506, 433);
             this.Controls.Add(this.ButtonClear);
             this.Controls.Add(this.statusStripMessage);
             this.Controls.Add(this.ButtonAdd);

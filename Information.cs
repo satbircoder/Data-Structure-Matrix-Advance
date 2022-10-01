@@ -27,7 +27,7 @@ namespace Data_Structure_Matrix_Advance
                 
         public string GetName()
         {
-            return name;
+            return name.ToUpper();
         }
         public void SetName(string aName)
         {
@@ -35,11 +35,11 @@ namespace Data_Structure_Matrix_Advance
         }
         public string GetCategory()
         {
-            return category;
+            return category.ToUpper();
         }
         public void SetCategory(string aCategory)
         {
-            category = aCategory;
+            category = aCategory.ToUpper();
         }
         public string GetStructure()
         {

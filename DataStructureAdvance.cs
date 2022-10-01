@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 
 using System.IO;
+using System.Linq.Expressions;
 
 namespace Data_Structure_Matrix_Advance
 {
@@ -52,7 +53,6 @@ namespace Data_Structure_Matrix_Advance
         private void ButtonClear_Click(object sender, EventArgs e)
         {
             ClearInput();
-            ListViewDisplay.SelectedItems.Clear();
         }
 
 
@@ -61,11 +61,11 @@ namespace Data_Structure_Matrix_Advance
             ListLoader();
             DisplayList();
             CategoryLoad();
-                     
         }
         private void Key_Press(object sender, KeyPressEventArgs e)
         {
-            e.Handled = e.KeyChar == (char)Keys.ControlKey || e.KeyChar != (char)Keys.Back && !char.IsLetter(e.KeyChar) && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar);
+            e.Handled = e.KeyChar != (char)Keys.Back && !char.IsLetterOrDigit(e.KeyChar) 
+                && !char.IsSeparator(e.KeyChar) && !char.IsControl(e.KeyChar);
             
             if(e.Handled.Equals(true))
             {
@@ -76,6 +76,7 @@ namespace Data_Structure_Matrix_Advance
                 StatusMessage.Text = "";
             }
         }
+        
         private bool InputStringCheck()
         {
             if(!string.IsNullOrEmpty(TextBoxName.Text) && !string.IsNullOrEmpty(TextBoxDefinition.Text) 
@@ -136,29 +137,41 @@ namespace Data_Structure_Matrix_Advance
         #region AddButton
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
-            if(DuplicateCheck() == false)
+            if(InputStringCheck().Equals(true))
             {
-                if(InputStringCheck() == true)
+                try
                 {
-                    Information addInformation = new Information();
-                    addInformation.SetName(TextBoxName.Text);
-                    addInformation.SetCategory(ComboBoxCategory.Text);
-                    addInformation.SetStructure(GetRadioButton());
-                    addInformation.SetDefinition(TextBoxDefinition.Text);
-                    wikiStorageList.Add(addInformation);
-                    DisplayList();
+                    if (DuplicateCheck().Equals(false))
+                    {
+                        Information addInformation = new Information();
+                        addInformation.SetName(TextBoxName.Text);
+                        addInformation.SetCategory(ComboBoxCategory.Text);
+                        addInformation.SetStructure(GetRadioButton());
+                        addInformation.SetDefinition(TextBoxDefinition.Text);
+                        wikiStorageList.Add(addInformation);
+                        if(!ComboBoxCategory.Items.Equals(addInformation.GetCategory()))
+                        {
+                            ComboBoxCategory.Items.Add(addInformation.GetCategory());
+                        }
+                        DisplayList();
+                    }
+                    else
+                    {
+                        StatusMessage.Text = "Already Exists";
+                    }
                 }
-                else
+                catch (IOException)
                 {
-                    StatusMessage.Text = "All Fields Must Have Data in it to add";
+                    MessageBox.Show("Something Went Wrong Please Try Again","Add Button Information",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 }
-                
+            
             }
-
             else
             {
-                StatusMessage.Text = "Already Exists";
+                StatusMessage.Text = "All Fields Must Have Data in it to add";
             }
+
+
             ClearInput();
         }
 
@@ -223,7 +236,7 @@ namespace Data_Structure_Matrix_Advance
             bool found = false;
             foreach(var item in wikiStorageList)
             {
-                if(item.GetName() == TextBoxName.Text && item.GetCategory() == ComboBoxCategory.Text)
+                if(item.GetName().Equals(TextBoxName.Text.ToUpper()) && item.GetCategory().Equals(ComboBoxCategory.Text.ToUpper()))
                 {
                     found = true;
                     break;
@@ -241,30 +254,37 @@ namespace Data_Structure_Matrix_Advance
         #region Delete
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
-            if (ListViewDisplay.FocusedItem != null || !string.IsNullOrEmpty(TextBoxName.Text))
+            if (ListViewDisplay.SelectedItems.Count != 0 || !string.IsNullOrEmpty(TextBoxName.Text))
             {
-                for(int i = 0; i < wikiStorageList.Count; i++)
+                try
                 {
-                    if (ListViewDisplay.Items[i].Selected || TextBoxName.Text.ToUpper().Equals(wikiStorageList[i].GetName()))
+                    for (int i = 0; i < wikiStorageList.Count; i++)
                     {
-                        var confirmation = MessageBox.Show("Are You Sure You want to delete " + wikiStorageList[i].GetName(), "System Information", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                        if(confirmation == DialogResult.Yes)
+                        if (ListViewDisplay.Items[i].Selected || TextBoxName.Text.ToUpper().Equals(wikiStorageList[i].GetName()))
                         {
-                            StatusMessage.Text = wikiStorageList[i].GetName() + " Has Been Deleted Successfully";
-                            wikiStorageList.RemoveAt(i);
-                            break;
+                            var confirmation = MessageBox.Show("Are You Sure You want to delete " + wikiStorageList[i].GetName(), "System Information", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                            if (confirmation == DialogResult.Yes)
+                            {
+                                StatusMessage.Text = wikiStorageList[i].GetName() + " Has Been Deleted Successfully";
+                                wikiStorageList.RemoveAt(i);
+                                break;
+                            }
+                            else
+                            {
+                                StatusMessage.Text = "User Has Canceled to Delete";
+                            }
+
                         }
+
                         else
                         {
-                            StatusMessage.Text = "User Has Canceled to Delete";
+                            StatusMessage.Text = "Item not in the List";
                         }
-                         
                     }
-                    
-                    else
-                    {
-                        StatusMessage.Text = "Item not in the List";
-                    }
+                }
+                catch(Exception)
+                {
+                    MessageBox.Show("Something Went Wrong please try again","Delete Button Information",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 }
                 DisplayList();
             }
@@ -282,13 +302,39 @@ namespace Data_Structure_Matrix_Advance
         #region Modify
         private void ButtonModify_Click(object sender, EventArgs e)
         {
-            int currentItem = ListViewDisplay.FocusedItem.Index;
-            wikiStorageList[currentItem].SetName(TextBoxName.Text);
-            wikiStorageList[currentItem].SetCategory(ComboBoxCategory.Text);
-            wikiStorageList[currentItem].SetStructure(GetRadioButton());
-            wikiStorageList[currentItem].SetDefinition(TextBoxDefinition.Text);
-            DisplayList();
-            ClearInput();
+            if(ListViewDisplay.SelectedItems.Count != 0 && InputStringCheck().Equals(true))
+            {
+                try
+                {
+                    int currentItem = ListViewDisplay.FocusedItem.Index;
+                    var confirmation = MessageBox.Show("Are You Sure to Edit " + wikiStorageList[currentItem].GetName(), "Edit Information",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+                    if(confirmation == DialogResult.Yes)
+                    {
+                        StatusMessage.Text = wikiStorageList[currentItem].GetName() + " has been modified on user's Request";
+                        wikiStorageList[currentItem].SetName(TextBoxName.Text);
+                        wikiStorageList[currentItem].SetCategory(ComboBoxCategory.Text);
+                        wikiStorageList[currentItem].SetStructure(GetRadioButton());
+                        wikiStorageList[currentItem].SetDefinition(TextBoxDefinition.Text);
+                        DisplayList();
+                        ClearInput();
+                    }
+                    else
+                    {
+                        StatusMessage.Text = "User Has Canceled Modification";
+                    }
+                    
+                    
+                }
+                catch(IOException)
+                {
+                    MessageBox.Show("Something Went Wrong Please Try Again");
+                }
+            }
+            else
+            {
+                StatusMessage.Text = "Please select the Item from list to modify";
+            }
+            
         }
 
         #endregion Modify
@@ -298,23 +344,30 @@ namespace Data_Structure_Matrix_Advance
         {
             if(!string.IsNullOrEmpty(TextBoxName.Text))
             {
-                Information findData = new Information();
-                findData.SetName(TextBoxName.Text.ToUpper());
-                int found = wikiStorageList.BinarySearch(findData);
-                if(found >= 0)
+                try
                 {
-                    ListViewDisplay.SelectedItems.Clear();
-                    ListViewDisplay.Items[found].Selected = true;
-                    ListViewDisplay.Focus();
-                    TextBoxName.Text = wikiStorageList[found].GetName();
-                    ComboBoxCategory.Text = wikiStorageList[found].GetCategory();
-                    SetRadioButton(found);
-                    TextBoxDefinition.Text = wikiStorageList[found].GetDefinition();
+                    Information findData = new Information();
+                    findData.SetName(TextBoxName.Text.ToUpper());
+                    int found = wikiStorageList.BinarySearch(findData);
+                    if (found >= 0)
+                    {
+                        ListViewDisplay.SelectedItems.Clear();
+                        ListViewDisplay.Items[found].Selected = true;
+                        ListViewDisplay.Focus();
+                        TextBoxName.Text = wikiStorageList[found].GetName();
+                        ComboBoxCategory.Text = wikiStorageList[found].GetCategory();
+                        SetRadioButton(found);
+                        TextBoxDefinition.Text = wikiStorageList[found].GetDefinition();
 
+                    }
+                    else
+                    {
+                        StatusMessage.Text = "Not in the List";
+                    }
                 }
-                else
+                catch(IOException)
                 {
-                    StatusMessage.Text = "Not in the List";
+                    MessageBox.Show("Something Went Wrong Please Try Again");
                 }
             }
             else
@@ -431,13 +484,20 @@ namespace Data_Structure_Matrix_Advance
         {
             Key_Press(sender, e);
         }
-
-        private void TextBoxDefinition_KeyPress(object sender, KeyPressEventArgs e)
+        private void TextBoxName_TextChanged(object sender, EventArgs e)
         {
-            Key_Press(sender, e);
+            if (System.Text.RegularExpressions.Regex.IsMatch(TextBoxName.Text, "[^0-9][^a-z][^A-Z]"))
+            {
+                TextBoxName.Text = "";
+                StatusMessage.Text = "Only Letter and Digits Allowed";
+            }
+            else
+            {
+                TextBoxName.Text = ((TextBox)sender).Text;
+            }
         }
-        #endregion Invalid Character
 
+        #endregion Invalid Character
     }
 
 }
