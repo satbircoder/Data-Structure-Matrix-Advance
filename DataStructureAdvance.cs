@@ -486,8 +486,8 @@ namespace Data_Structure_Matrix_Advance
         }
         private void TextBoxName_TextChanged(object sender, EventArgs e)
         {
-            if (System.Text.RegularExpressions.Regex.IsMatch(TextBoxName.Text, "[^0-9][^a-z][^A-Z]"))
-            {
+            if (System.Text.RegularExpressions.Regex.IsMatch(TextBoxName.Text, "[^0-9][^a-z][^A-Z]"+ "([^0-9][^a-z][^A-Z]+)*$"))
+            { 
                 TextBoxName.Text = "";
                 StatusMessage.Text = "Only Letter and Digits Allowed";
             }

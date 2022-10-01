@@ -99,7 +99,7 @@
             this.TextBoxName.Location = new System.Drawing.Point(25, 28);
             this.TextBoxName.Multiline = true;
             this.TextBoxName.Name = "TextBoxName";
-            this.TextBoxName.Size = new System.Drawing.Size(128, 31);
+            this.TextBoxName.Size = new System.Drawing.Size(146, 31);
             this.TextBoxName.TabIndex = 2;
             this.TextBoxName.TextChanged += new System.EventHandler(this.TextBoxName_TextChanged);
             this.TextBoxName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBoxName_KeyPress);
