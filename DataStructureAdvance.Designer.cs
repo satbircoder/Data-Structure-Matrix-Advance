@@ -47,9 +47,10 @@
             this.ButtonDelete = new System.Windows.Forms.Button();
             this.ButtonModify = new System.Windows.Forms.Button();
             this.ButtonAdd = new System.Windows.Forms.Button();
-            this.statusStripMessage = new System.Windows.Forms.StatusStrip();
-            this.StatusMessage = new System.Windows.Forms.ToolStripStatusLabel();
             this.ButtonClear = new System.Windows.Forms.Button();
+            this.StatusMessage = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStripMessage = new System.Windows.Forms.StatusStrip();
             this.GroupBoxRadioButton.SuspendLayout();
             this.statusStripMessage.SuspendLayout();
             this.SuspendLayout();
@@ -143,13 +144,13 @@
             this.RadioButtonNonLinear.Name = "RadioButtonNonLinear";
             this.RadioButtonNonLinear.Size = new System.Drawing.Size(77, 17);
             this.RadioButtonNonLinear.TabIndex = 7;
-            this.RadioButtonNonLinear.TabStop = true;
             this.RadioButtonNonLinear.Text = "Non-Linear";
             this.RadioButtonNonLinear.UseVisualStyleBackColor = true;
             // 
             // RadioButtonLinear
             // 
             this.RadioButtonLinear.AutoSize = true;
+            this.RadioButtonLinear.Checked = true;
             this.RadioButtonLinear.Location = new System.Drawing.Point(6, 19);
             this.RadioButtonLinear.Name = "RadioButtonLinear";
             this.RadioButtonLinear.Size = new System.Drawing.Size(54, 17);
@@ -243,22 +244,6 @@
             this.ButtonAdd.UseVisualStyleBackColor = false;
             this.ButtonAdd.Click += new System.EventHandler(this.ButtonAdd_Click);
             // 
-            // statusStripMessage
-            // 
-            this.statusStripMessage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.StatusMessage});
-            this.statusStripMessage.Location = new System.Drawing.Point(0, 411);
-            this.statusStripMessage.Name = "statusStripMessage";
-            this.statusStripMessage.Size = new System.Drawing.Size(506, 22);
-            this.statusStripMessage.TabIndex = 14;
-            this.statusStripMessage.Text = "statusStrip1";
-            // 
-            // StatusMessage
-            // 
-            this.StatusMessage.Name = "StatusMessage";
-            this.StatusMessage.Size = new System.Drawing.Size(53, 17);
-            this.StatusMessage.Text = "Message";
-            // 
             // ButtonClear
             // 
             this.ButtonClear.BackColor = System.Drawing.Color.DarkGray;
@@ -269,6 +254,29 @@
             this.ButtonClear.Text = "CLEAR";
             this.ButtonClear.UseVisualStyleBackColor = false;
             this.ButtonClear.Click += new System.EventHandler(this.ButtonClear_Click);
+            // 
+            // StatusMessage
+            // 
+            this.StatusMessage.Name = "StatusMessage";
+            this.StatusMessage.Size = new System.Drawing.Size(0, 17);
+            // 
+            // StatusLabel
+            // 
+            this.StatusLabel.Name = "StatusLabel";
+            this.StatusLabel.Size = new System.Drawing.Size(0, 17);
+            this.StatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // statusStripMessage
+            // 
+            this.statusStripMessage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusMessage,
+            this.StatusLabel});
+            this.statusStripMessage.Location = new System.Drawing.Point(0, 411);
+            this.statusStripMessage.Name = "statusStripMessage";
+            this.statusStripMessage.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.statusStripMessage.Size = new System.Drawing.Size(506, 22);
+            this.statusStripMessage.TabIndex = 14;
+            this.statusStripMessage.Text = "Message:";
             // 
             // FormDataStructureMatrixAdvance
             // 
@@ -296,6 +304,7 @@
             this.Name = "FormDataStructureMatrixAdvance";
             this.Text = "Data Structure Matrix Advance";
             this.Load += new System.EventHandler(this.FormDataStructureMatrixAdvance_Load);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormDataStructureMatrixAdvance_MouseMove);
             this.GroupBoxRadioButton.ResumeLayout(false);
             this.GroupBoxRadioButton.PerformLayout();
             this.statusStripMessage.ResumeLayout(false);
@@ -323,11 +332,12 @@
         private System.Windows.Forms.Button ButtonDelete;
         private System.Windows.Forms.Button ButtonModify;
         private System.Windows.Forms.Button ButtonAdd;
-        private System.Windows.Forms.StatusStrip statusStripMessage;
-        private System.Windows.Forms.ToolStripStatusLabel StatusMessage;
         private System.Windows.Forms.ColumnHeader columnHeaderName;
         private System.Windows.Forms.ColumnHeader columnHeaderCategory;
         private System.Windows.Forms.Button ButtonClear;
+        private System.Windows.Forms.ToolStripStatusLabel StatusMessage;
+        private System.Windows.Forms.ToolStripStatusLabel StatusLabel;
+        private System.Windows.Forms.StatusStrip statusStripMessage;
     }
 }
 

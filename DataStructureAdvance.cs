@@ -56,11 +56,11 @@ namespace Data_Structure_Matrix_Advance
 
             {
                 ClearInput();
-                StatusMessage.Text = "All Fields Cleared Successfully";
+                StatusLabel.Text = "All Fields Cleared Successfully";
             }
             else
             {
-                StatusMessage.Text = "Nothing to Clear";
+                StatusLabel.Text = "Nothing to Clear";
             }
 
         }
@@ -71,6 +71,7 @@ namespace Data_Structure_Matrix_Advance
             ListLoader();
             DisplayList();
             CategoryLoad();
+            StatusMessage.Text = "Message:";
         }
         private void Key_Press(object sender, KeyPressEventArgs e)
         {
@@ -79,11 +80,11 @@ namespace Data_Structure_Matrix_Advance
             
             if(e.Handled.Equals(true))
             {
-                StatusMessage.Text = "Invalid Input"; 
+                StatusLabel.Text = "Invalid Input"; 
             }
             else
             {
-                StatusMessage.Text = "";
+                StatusLabel.Text = "";
             }
         }
         
@@ -99,6 +100,10 @@ namespace Data_Structure_Matrix_Advance
                 return false;
             }
         }
+        private void FormDataStructureMatrixAdvance_MouseMove(object sender, MouseEventArgs e)
+        {
+            StatusLabel.Text = "";
+        }
         private void CategoryLoad()
         {
             if(File.Exists("Category.txt"))
@@ -111,7 +116,7 @@ namespace Data_Structure_Matrix_Advance
             }
             else
             {
-                StatusMessage.Text = "File is not available to load";
+                StatusLabel.Text = "File is not available to load";
             }
         }
         private void ListLoader()// Loaded list using Class Constructor
@@ -124,7 +129,7 @@ namespace Data_Structure_Matrix_Advance
            wikiStorageList.Add(loadList);
            Information loadLinkList = new Information("Linked List", "List", "Linear", "A linked list is a linear collection of data elements whose order is not given by their physical placement in memory. Instead, each element points to the next. It is a data structure consisting of a collection of nodes which together represent a sequence.");
            wikiStorageList.Add(loadLinkList);
-           Information loadSelfTree = new Information("Self-Balanced Tree", "Tree", "Non-Linear", "Self-Balancing Trees are height-balanced  trees that automatically keeps height as small as possible when insertion and deletion operations are performed on tree. The height is typically maintained in order of Log n so that all operations take O(Log n) time on average.");
+           Information loadSelfTree = new Information("Self Balanced Tree", "Tree", "Non-Linear", "Self-Balancing Trees are height-balanced  trees that automatically keeps height as small as possible when insertion and deletion operations are performed on tree. The height is typically maintained in order of Log n so that all operations take O(Log n) time on average.");
            wikiStorageList.Add(loadSelfTree);
            Information loadHeap = new Information("Heap", "Tree", "Non-Linear", "It is a complete binary tree that satisfies the heap property, where any given node is always greater than its child node/s and the key of the root node is the largest among all other nodes. This property is also called max heap property and reverse to it is known as Min heap property.");
            wikiStorageList.Add(loadHeap);
@@ -167,7 +172,7 @@ namespace Data_Structure_Matrix_Advance
                     }
                     else
                     {
-                        StatusMessage.Text = "Already Exists";
+                        StatusLabel.Text = "Already Exists";
                     }
                 }
                 catch (IOException)
@@ -178,7 +183,7 @@ namespace Data_Structure_Matrix_Advance
             }
             else
             {
-                StatusMessage.Text = "All Fields Must Have Data in it to add";
+                StatusLabel.Text = "All Fields Must Have Data in it to add";
             }
 
 
@@ -275,20 +280,20 @@ namespace Data_Structure_Matrix_Advance
                             var confirmation = MessageBox.Show("Are You Sure You want to delete " + wikiStorageList[i].GetName(), "System Information", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                             if (confirmation == DialogResult.Yes)
                             {
-                                StatusMessage.Text = wikiStorageList[i].GetName() + " Has Been Deleted Successfully";
+                                StatusLabel.Text = wikiStorageList[i].GetName() + " Has Been Deleted Successfully";
                                 wikiStorageList.RemoveAt(i);
                                 DisplayList();
-                                //break;
+                               break;
                             }
-                            else
+                            else if (confirmation == DialogResult.No)
                             {
-                                StatusMessage.Text = "User Has Canceled to Delete";
+                                StatusLabel.Text = "User Has Canceled to Delete";
                             }
-                            break;
                         }
-                        else
+                        if (i == wikiStorageList.Count - 1 && !ListViewDisplay.Items[i].Selected
+                                || !TextBoxName.Text.ToUpper().Equals(wikiStorageList[i].GetName()))
                         {
-                            StatusMessage.Text = "Item not in the List";
+                            StatusLabel.Text = "Item not in the List";
                         }
                     }
                 }
@@ -319,7 +324,7 @@ namespace Data_Structure_Matrix_Advance
                     var confirmation = MessageBox.Show("Are You Sure to Edit " + wikiStorageList[currentItem].GetName(), "Edit Information",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
                     if(confirmation == DialogResult.Yes)
                     {
-                        StatusMessage.Text = wikiStorageList[currentItem].GetName() + " has been modified on user's Request";
+                        StatusLabel.Text = wikiStorageList[currentItem].GetName() + " has been modified on user's Request";
                         wikiStorageList[currentItem].SetName(TextBoxName.Text);
                         wikiStorageList[currentItem].SetCategory(ComboBoxCategory.Text);
                         wikiStorageList[currentItem].SetStructure(GetRadioButton());
@@ -329,7 +334,7 @@ namespace Data_Structure_Matrix_Advance
                     }
                     else
                     {
-                        StatusMessage.Text = "User Has Canceled Modification";
+                        StatusLabel.Text = "User Has Canceled Modification";
                     }
                     
                     
@@ -341,7 +346,7 @@ namespace Data_Structure_Matrix_Advance
             }
             else
             {
-                StatusMessage.Text = "Please select the Item from list to modify";
+                StatusLabel.Text = "Please select the Item from list to modify";
             }
             
         }
@@ -371,7 +376,7 @@ namespace Data_Structure_Matrix_Advance
                     }
                     else
                     {
-                        StatusMessage.Text = "Searched Item is not in the List";
+                        StatusLabel.Text = "Searched Item is not in the List";
                     }
                 }
                 catch(IOException)
@@ -401,12 +406,12 @@ namespace Data_Structure_Matrix_Advance
             if(dr.Equals(DialogResult.Cancel))
             {
                 saveFileDialog.FileName = fileName;
-                StatusMessage.Text = "File Has been Saved with Default Name As " +Path.GetFileName(this.fileName);
+                StatusLabel.Text = "File Has been Saved with Default Name As " +Path.GetFileName(this.fileName);
             }
             if(dr.Equals(DialogResult.OK))
             {
                 fileName = saveFileDialog.FileName;
-                StatusMessage.Text = "File Has been saved with " +Path.GetFileName(fileName);
+                StatusLabel.Text = "File Has been saved with " +Path.GetFileName(fileName);
             }
             try
             {
@@ -448,11 +453,11 @@ namespace Data_Structure_Matrix_Advance
             if(or.Equals(DialogResult.OK))
             {
                 fileName = openFileDialog.FileName;
-                StatusMessage.Text = Path.GetFileName(fileName) + " Has Been Loaded";
+                StatusLabel.Text = Path.GetFileName(fileName) + " Has Been Loaded";
             }
             if(or.Equals(DialogResult.Cancel))
             {
-                StatusMessage.Text = "User Has Canceled to Open File";
+                StatusLabel.Text = "User Has Canceled to Open File";
             }
             try
             {
@@ -495,10 +500,10 @@ namespace Data_Structure_Matrix_Advance
         }
         private void TextBoxName_TextChanged(object sender, EventArgs e)
         {
-            if (System.Text.RegularExpressions.Regex.IsMatch(TextBoxName.Text, "[^0-9][^a-z][^A-Z]"+ "([^0-9][^a-z][^A-Z]+)*$"))
+            if (System.Text.RegularExpressions.Regex.IsMatch(TextBoxName.Text, "[^0-9][^a-z][^A-Z]"+ "([^0-9][^a-z][^A-Z]+)^*$"))
             { 
                 TextBoxName.Text = "";
-                StatusMessage.Text = "Only Letter and Digits Allowed";
+                StatusLabel.Text = "Only Letter and Digits Allowed";
             }
             else
             {
@@ -507,6 +512,8 @@ namespace Data_Structure_Matrix_Advance
         }
 
         #endregion Invalid Character
+
+       
     }
 
 }
