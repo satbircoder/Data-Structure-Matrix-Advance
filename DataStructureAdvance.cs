@@ -52,7 +52,17 @@ namespace Data_Structure_Matrix_Advance
         }
         private void ButtonClear_Click(object sender, EventArgs e)
         {
-            ClearInput();
+            if(InputStringCheck()==true || ListViewDisplay.SelectedItems.Count !=0)
+
+            {
+                ClearInput();
+                StatusMessage.Text = "All Fields Cleared Successfully";
+            }
+            else
+            {
+                StatusMessage.Text = "Nothing to Clear";
+            }
+
         }
 
 
@@ -267,15 +277,15 @@ namespace Data_Structure_Matrix_Advance
                             {
                                 StatusMessage.Text = wikiStorageList[i].GetName() + " Has Been Deleted Successfully";
                                 wikiStorageList.RemoveAt(i);
-                                break;
+                                DisplayList();
+                                //break;
                             }
                             else
                             {
                                 StatusMessage.Text = "User Has Canceled to Delete";
                             }
-
+                            break;
                         }
-
                         else
                         {
                             StatusMessage.Text = "Item not in the List";
@@ -286,14 +296,13 @@ namespace Data_Structure_Matrix_Advance
                 {
                     MessageBox.Show("Something Went Wrong please try again","Delete Button Information",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 }
-                DisplayList();
+               
             }
             else
             {
                 MessageBox.Show("Select The Item from the List OR Enter the name of the item in Name TextBox to delete",
                     "Delete Information",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
-            
             ClearInput();
         }
 
@@ -347,7 +356,7 @@ namespace Data_Structure_Matrix_Advance
                 try
                 {
                     Information findData = new Information();
-                    findData.SetName(TextBoxName.Text.ToUpper());
+                    findData.SetName(TextBoxName.Text);
                     int found = wikiStorageList.BinarySearch(findData);
                     if (found >= 0)
                     {
@@ -362,7 +371,7 @@ namespace Data_Structure_Matrix_Advance
                     }
                     else
                     {
-                        StatusMessage.Text = "Not in the List";
+                        StatusMessage.Text = "Searched Item is not in the List";
                     }
                 }
                 catch(IOException)
