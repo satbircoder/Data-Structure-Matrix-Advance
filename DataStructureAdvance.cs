@@ -7,11 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-
 using System.IO;
 using System.Linq.Expressions;
-
+using System.Diagnostics;
+// Satbir Singh
+// Date: 05/10/2022
+// Student ID 30048567
+// Data Structure Matrix Using Class Structure
+//6.16 All code is required to be adequately commented. Map the programming criteria and
+//features to your code/methods by adding comments above the method signatures. Ensure your code is compliant with the CITEMS coding standards (refer http://www.citems.com.au/).
 namespace Data_Structure_Matrix_Advance
 {
     public partial class FormDataStructureMatrixAdvance : Form
@@ -20,36 +24,457 @@ namespace Data_Structure_Matrix_Advance
         {
             InitializeComponent();
         }
+        //6.2 Create a global List<T> of type Information called Wiki.
         List<Information> wikiStorageList = new List<Information>();
         string fileName = "Definition.bin";
 
-        #region Utilities
+        //6.3 Create a button method to ADD a new item to the list.
+        //Use a TextBox for the Name input, ComboBox for the Category, Radio group for the Structure and Multiline TextBox for the Definition.
+       
+        #region AddButton
+        private void ButtonAdd_Click(object sender, EventArgs e)
+        {
+            Information addInformation = new Information();
+            if (InputStringCheck().Equals(true))
+            {
+                try
+                {
+                    if (ValidName(TextBoxName.Text).Equals(false))
+                    {
+                        addInformation.SetName(TextBoxName.Text);
+                        addInformation.SetCategory(ComboBoxCategory.Text);
+                        addInformation.SetStructure(GetRadioButton());
+                        addInformation.SetDefinition(TextBoxDefinition.Text);
+                        wikiStorageList.Add(addInformation);
+
+                        if (!ComboBoxCategory.Items.Equals(addInformation.GetCategory()))
+                        {
+                            ComboBoxCategory.Items.Add(addInformation.GetCategory());
+                        }
+                        DisplayList();
+                        int addIndex = wikiStorageList.BinarySearch(addInformation);
+                        ListViewDisplay.Items[addIndex].Selected = true;
+                        ListViewDisplay.Focus();
+                    }
+                    else
+                    {
+                        StatusLabel.Text = "Already Exists";
+                    }
+                }
+                catch (IOException)
+                {
+                    MessageBox.Show("Something Went Wrong Please Try Again", "Add Button Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+            else
+            {
+                StatusLabel.Text = "All Fields Must Have Data in it to add";
+            }
+            ClearInput();
+        }
+
+        #endregion AddButton
+
+        //6.4 Create a custom method to populate the ComboBox when the Form Load method is called. The six categories must be read from a simple text file.
+        #region Category Load From Text File
+        private void CategoryLoad()
+        {
+            if (File.Exists("Category.txt"))
+            {
+                string[] category = File.ReadAllLines("Category.txt");
+                foreach (var item in category)
+                {
+                    ComboBoxCategory.Items.Add(item);
+                }
+            }
+            else
+            {
+                StatusLabel.Text = "File is not available to load";
+            }
+        }
+
+        #endregion
+
+        //6.5 Create a custom ValidName method which will take a parameter string value from the Textbox Name and returns a Boolean after checking for duplicates.
+        //Use the built in List<T> method “Exists” to answer this requirement.
+        #region Duplicate Check
+
+        private bool ValidName(string checkName)
+        {
+            bool valid = false;
+            if (wikiStorageList.Exists(x => x.GetName().Equals(checkName.ToUpper())))
+            {
+                valid = true;
+            }
+            else
+            {
+                valid = false;
+            }
+            return valid;
+        }
+        #endregion Duplicate Check
+
+        //6.6 Create two methods to highlight and return the values from the Radio button GroupBox.
+        //The first method must return a string value from the selected radio button (Linear or Non-Linear).
+        //The second method must send an integer index which will highlight an appropriate radio button.
+        #region RadioButton
+
+        private void SetRadioButton(int structure)
+        {
+            foreach (RadioButton rb in GroupBoxRadioButton.Controls.OfType<RadioButton>())
+            {
+                if (rb.Text == wikiStorageList[structure].GetStructure())
+                {
+                    rb.Checked = true;
+                }
+                else
+                {
+                    rb.Checked = false;
+                }
+            }
+        }
+
+        private string GetRadioButton()
+        {
+            string rbstructure = "";
+            foreach (RadioButton rb in GroupBoxRadioButton.Controls.OfType<RadioButton>())
+            {
+                if (rb.Checked)
+                {
+                    rbstructure = rb.Text;
+                    break;
+                }
+                else
+                {
+                    statusStripMessage.Text = "Not a structure type";
+                    rbstructure = statusStripMessage.Text;
+                }
+
+            }
+            return rbstructure;
+
+        }
+
+
+        #endregion RadioButton
+
+        //6.7 Create a button method that will delete the currently selected record in the ListView.
+        //Ensure the user has the option to backout of this action by using a dialog box. Display an updated version of the sorted list at the end of this process.
+        #region Delete
+        private void ButtonDelete_Click(object sender, EventArgs e)
+        {
+            if (ListViewDisplay.SelectedItems.Count != 0 || !string.IsNullOrEmpty(TextBoxName.Text))
+            {
+                try
+                {
+                    for (int i = 0; i < wikiStorageList.Count; i++)
+                    {
+                        if (ListViewDisplay.Items[i].Selected || TextBoxName.Text.ToUpper().Equals(wikiStorageList[i].GetName()))
+                        {
+                            var confirmation = MessageBox.Show("Are You Sure You want to delete " + wikiStorageList[i].GetName(), "System Information", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                            if (confirmation == DialogResult.Yes)
+                            {
+                                StatusLabel.Text = wikiStorageList[i].GetName() + " Has Been Deleted Successfully";
+                                wikiStorageList.RemoveAt(i);
+                                DisplayList();
+                                break;
+                            }
+                            else if (confirmation == DialogResult.No)
+                            {
+                                StatusLabel.Text = "User Has Canceled to Delete";
+                            }
+                        }
+                        if (i == wikiStorageList.Count - 1 && !ListViewDisplay.Items[i].Selected
+                                || !TextBoxName.Text.ToUpper().Equals(wikiStorageList[i].GetName()))
+                        {
+                            StatusLabel.Text = "Item not in the List";
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Something Went Wrong please try again", "Delete Button Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Select The Item from the List OR Enter the name of the item in Name TextBox to delete",
+                    "Delete Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            ClearInput();
+        }
+
+        #endregion Delete
+
+        //6.8 Create a button method that will save the edited record of the currently selected item in the ListView.
+        //All the changes in the input controls will be written back to the list. Display an updated version of the sorted list at the end of this process.
+        #region Modify
+        private void ButtonModify_Click(object sender, EventArgs e)
+        {
+            if (ListViewDisplay.SelectedItems.Count != 0 && InputStringCheck().Equals(true))
+            {
+                try
+                {
+                    int currentItem = ListViewDisplay.FocusedItem.Index;
+                    var confirmation = MessageBox.Show("Are You Sure to Edit " + wikiStorageList[currentItem].GetName(), "Edit Information", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (confirmation == DialogResult.Yes)
+                    {
+                        StatusLabel.Text = wikiStorageList[currentItem].GetName() + " has been modified on user's Request";
+                        wikiStorageList[currentItem].SetName(TextBoxName.Text);
+                        wikiStorageList[currentItem].SetCategory(ComboBoxCategory.Text);
+                        wikiStorageList[currentItem].SetStructure(GetRadioButton());
+                        wikiStorageList[currentItem].SetDefinition(TextBoxDefinition.Text);
+                        DisplayList();
+                        ClearInput();
+                    }
+                    else
+                    {
+                        StatusLabel.Text = "User Has Canceled Modification";
+                    }
+
+
+                }
+                catch (IOException)
+                {
+                    MessageBox.Show("Something Went Wrong Please Try Again");
+                }
+            }
+            else
+            {
+                StatusLabel.Text = "Please select the Item from list to modify";
+            }
+
+        }
+
+        #endregion Modify
+
+        //6.9 Create a single custom method that will sort and then display the Name and Category from the wiki information in the list.
+        #region Display
         public void DisplayList()
         {
             ListViewDisplay.Items.Clear();
             wikiStorageList.Sort();
-            foreach(var information in wikiStorageList)
+            foreach (var information in wikiStorageList)
             {
                 ListViewItem lvItem = new ListViewItem(information.GetName());
                 lvItem.SubItems.Add(information.GetCategory());
                 ListViewDisplay.Items.Add(lvItem);
-                
+
             }
-            
+        }
+        #endregion Display
+
+        //6.10 Create a button method that will use the builtin binary search to find a Data Structure name.
+        //If the record is found the associated details will populate the appropriate input controls and highlight the name in the ListView.
+        //At the end of the search process the search input TextBox must be cleared.
+        #region Search
+        private void ButtonSearch_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(TextBoxName.Text))
+            {
+                try
+                {
+                    Information findData = new Information();
+                    findData.SetName(TextBoxName.Text);
+                    int found = wikiStorageList.BinarySearch(findData);
+                    if (found >= 0)
+                    {
+                        ListViewDisplay.SelectedItems.Clear();
+                        ListViewDisplay.Items[found].Selected = true;
+                        ListViewDisplay.Focus();
+                        TextBoxName.Text = wikiStorageList[found].GetName();
+                        ComboBoxCategory.Text = wikiStorageList[found].GetCategory();
+                        SetRadioButton(found);
+                        TextBoxDefinition.Text = wikiStorageList[found].GetDefinition();
+
+                    }
+                    else
+                    {
+                        StatusLabel.Text = "Searched Item is not in the List";
+                    }
+                }
+                catch (IOException)
+                {
+                    MessageBox.Show("Something Went Wrong Please Try Again");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Enter the Name in Search Box", "Search Informatio", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
 
         }
 
+
+        #endregion Search
+
+        //6.11 Create a ListView event so a user can select a Data Structure Name
+        //from the list of Names and the associated information will be displayed in the related text boxes combo box and radio button.
+        #region ClickDisplay
+        private void ListViewDisplay_Click(object sender, EventArgs e)
+        {
+            int currentItem = ListViewDisplay.SelectedIndices[0];
+            TextBoxName.Text = wikiStorageList[currentItem].GetName();
+            ComboBoxCategory.Text = wikiStorageList[currentItem].GetCategory();
+            SetRadioButton(currentItem);
+            TextBoxDefinition.Text = wikiStorageList[currentItem].GetDefinition();
+        }
+
+        #endregion Click Display
+
+        //6.12 Create a custom method that will clear and reset the TextBoxes, ComboBox and Radio button
+        #region Reset_Input
         private void ClearInput()
         {
             TextBoxName.Clear();
             TextBoxDefinition.Clear();
             ComboBoxCategory.Text = "";
-            foreach(RadioButton rb in GroupBoxRadioButton.Controls.OfType<RadioButton>())
+            foreach (RadioButton rb in GroupBoxRadioButton.Controls.OfType<RadioButton>())
             {
                 rb.Checked = false;
             }
-            ListViewDisplay.SelectedItems.Clear();
+           
         }
+        #endregion Reset_Input
+
+        //6.13 Create a double click event on the Name TextBox to clear the TextBboxes, ComboBox and Radio button.
+        #region Double_Click TextBox
+        private void TextBoxName_DoubleClick(object sender, EventArgs e)
+        {
+            ClearInput();
+        }
+        #endregion Double_Click TextBox
+
+        //6.14 Create two buttons for the manual open and save option;
+        //this must use a dialog box to select a file or rename a saved file. All Wiki data is stored/retrieved using a binary reader/writer file format.
+        #region Save
+        private void ButtonSave_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.InitialDirectory = Application.StartupPath;
+            saveFileDialog.Filter = "BIN |*.bin";
+            saveFileDialog.Title = "Save Binary File";
+            DialogResult dr = saveFileDialog.ShowDialog();
+            if (dr.Equals(DialogResult.Cancel))
+            {
+                saveFileDialog.FileName = fileName;
+                StatusLabel.Text = "File Has been Saved with Default Name As " + Path.GetFileName(this.fileName);
+            }
+            if (dr.Equals(DialogResult.OK))
+            {
+                fileName = saveFileDialog.FileName;
+                StatusLabel.Text = "File Has been saved with " + Path.GetFileName(fileName);
+            }
+            try
+            {
+                using (var stream = File.Open(fileName, FileMode.Create))
+                {
+                    using (var writer = new BinaryWriter(stream, Encoding.UTF8, false))
+                    {
+                        foreach (var item in wikiStorageList)
+                        {
+                            writer.Write(item.GetName());
+                            writer.Write(item.GetCategory());
+                            writer.Write(item.GetStructure());
+                            writer.Write(item.GetDefinition());
+                        }
+                    }
+                }
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Unable to Save File", "Save Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+        #endregion Save
+
+        #region Open
+        private void ButtonOpen_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = Application.StartupPath;
+            openFileDialog.Filter = "BIN |*.bin";
+            openFileDialog.Title = "Open Saved File";
+            DialogResult or = openFileDialog.ShowDialog();
+            if (or.Equals(DialogResult.OK))
+            {
+                fileName = openFileDialog.FileName;
+                StatusLabel.Text = Path.GetFileName(fileName) + " Has Been Loaded";
+            }
+            if (or.Equals(DialogResult.Cancel))
+            {
+                StatusLabel.Text = "User Has Canceled to Open File";
+            }
+            try
+            {
+                wikiStorageList.Clear();
+                using (Stream stream = File.Open(fileName, FileMode.Open))
+                {
+                    using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
+                    {
+                        while (stream.Position < stream.Length)
+                        {
+                            Information newDefinition = new Information();
+                            newDefinition.SetName(reader.ReadString());
+                            newDefinition.SetCategory(reader.ReadString());
+                            newDefinition.SetStructure(reader.ReadString());
+                            newDefinition.SetDefinition(reader.ReadString());
+                            wikiStorageList.Add(newDefinition);
+                        }
+
+                    }
+
+                }
+                DisplayList();
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Unable to Open FIle", "Open File Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        #endregion Open
+
+        //6.15 The Wiki application will save data when the form closes. 
+
+        #region Form_Closed Save
+        private void FormDataStructureMatrixAdvance_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            string fileName = "lastData.bin";
+           SaveFileDialog saveFileDialog = new SaveFileDialog();
+           saveFileDialog.InitialDirectory = Application.StartupPath;
+            saveFileDialog.FileName = fileName;
+            try
+            {
+                using (var stream = File.Open(fileName, FileMode.Create))
+                {
+                    using (var writer = new BinaryWriter(stream, Encoding.UTF8, false))
+                    {
+                        foreach (var item in wikiStorageList)
+                        {
+                            writer.Write(item.GetName());
+                            writer.Write(item.GetCategory());
+                            writer.Write(item.GetStructure());
+                            writer.Write(item.GetDefinition());
+                        }
+                    }
+                }
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Unable to Save File", "Save Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+
+        }
+        #endregion Form_Closed Save
+
+        // FormLoad Methods, Null Input check method, Clear Button Code
+        #region Utilities
         private void ButtonClear_Click(object sender, EventArgs e)
         {
             if(InputStringCheck()==true || ListViewDisplay.SelectedItems.Count !=0)
@@ -57,6 +482,7 @@ namespace Data_Structure_Matrix_Advance
             {
                 ClearInput();
                 StatusLabel.Text = "All Fields Cleared Successfully";
+                ListViewDisplay.SelectedItems.Clear();
             }
             else
             {
@@ -64,31 +490,18 @@ namespace Data_Structure_Matrix_Advance
             }
 
         }
-
-
         private void FormDataStructureMatrixAdvance_Load(object sender, EventArgs e)
         {
             ListLoader();
             DisplayList();
             CategoryLoad();
             StatusMessage.Text = "Message:";
-        }
-        private void Key_Press(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = e.KeyChar != (char)Keys.Back && !char.IsLetterOrDigit(e.KeyChar) 
-                && !char.IsSeparator(e.KeyChar) && !char.IsControl(e.KeyChar);
-            
-            if(e.Handled.Equals(true))
+            foreach(RadioButton rb in GroupBoxRadioButton.Controls.OfType<RadioButton>())// setting radio button to false 
             {
-                StatusLabel.Text = "Invalid Input"; 
-            }
-            else
-            {
-                StatusLabel.Text = "";
+                rb.Checked = false;
             }
         }
-        
-        private bool InputStringCheck()
+        private bool InputStringCheck()// Function to check values in data fields 
         {
             if(!string.IsNullOrEmpty(TextBoxName.Text) && !string.IsNullOrEmpty(TextBoxDefinition.Text) 
                 && !string.IsNullOrEmpty(ComboBoxCategory.Text) && !string.IsNullOrEmpty(GetRadioButton()))
@@ -104,21 +517,7 @@ namespace Data_Structure_Matrix_Advance
         {
             StatusLabel.Text = "";
         }
-        private void CategoryLoad()
-        {
-            if(File.Exists("Category.txt"))
-                {
-                string[] category = File.ReadAllLines("Category.txt");
-                foreach (var item in category)
-                {
-                    ComboBoxCategory.Items.Add(item);
-                }
-            }
-            else
-            {
-                StatusLabel.Text = "File is not available to load";
-            }
-        }
+       
         private void ListLoader()// Loaded list using Class Constructor
         {
            Information loadArray = new Information("Array", "Array", "Linear", "Arrays are used to store multiple values in a single variable, instead of declaring separate variables for each value.");
@@ -147,349 +546,25 @@ namespace Data_Structure_Matrix_Advance
            wikiStorageList.Add(loadHashTable);
         }
 
-        #endregion Utilities
+        #endregion Utilities 
 
-        #region AddButton
-        private void ButtonAdd_Click(object sender, EventArgs e)
-        {
-            if(InputStringCheck().Equals(true))
-            {
-                try
-                {
-                    if (DuplicateCheck().Equals(false))
-                    {
-                        Information addInformation = new Information();
-                        addInformation.SetName(TextBoxName.Text);
-                        addInformation.SetCategory(ComboBoxCategory.Text);
-                        addInformation.SetStructure(GetRadioButton());
-                        addInformation.SetDefinition(TextBoxDefinition.Text);
-                        wikiStorageList.Add(addInformation);
-                        if(!ComboBoxCategory.Items.Equals(addInformation.GetCategory()))
-                        {
-                            ComboBoxCategory.Items.Add(addInformation.GetCategory());
-                        }
-                        DisplayList();
-                    }
-                    else
-                    {
-                        StatusLabel.Text = "Already Exists";
-                    }
-                }
-                catch (IOException)
-                {
-                    MessageBox.Show("Something Went Wrong Please Try Again","Add Button Information",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                }
-            
-            }
-            else
-            {
-                StatusLabel.Text = "All Fields Must Have Data in it to add";
-            }
-
-
-            ClearInput();
-        }
-
-        #endregion AddButton
-
-        #region ClickDisplay
-        private void ListViewDisplay_Click(object sender, EventArgs e)
-        {
-            int currentItem = ListViewDisplay.SelectedIndices[0];
-            TextBoxName.Text = wikiStorageList[currentItem].GetName();
-            ComboBoxCategory.Text = wikiStorageList[currentItem].GetCategory();
-            SetRadioButton(currentItem);
-            TextBoxDefinition.Text = wikiStorageList[currentItem].GetDefinition();
-        }
-
-        #endregion Click Display
-
-        #region RadioButton
-
-        private void SetRadioButton(int structure)
-        {
-            foreach(RadioButton rb in GroupBoxRadioButton.Controls.OfType<RadioButton>())
-            {
-                if(rb.Text == wikiStorageList[structure].GetStructure())
-                {
-                    rb.Checked = true;
-                }
-                else
-                {
-                    rb.Checked = false;
-                }
-            }
-        }
-
-        private string GetRadioButton()
-        {
-            string rbstructure = "";
-            foreach(RadioButton rb in GroupBoxRadioButton.Controls.OfType<RadioButton>())
-            {
-                if(rb.Checked)
-                {
-                    rbstructure = rb.Text;
-                    break;
-                }
-                else
-                {
-                    statusStripMessage.Text = "Not a structure type";
-                    rbstructure = statusStripMessage.Text;                }
-                
-            }
-            return rbstructure;
-
-        }
-
-
-        #endregion RadioButton
-
-        #region Duplicate Check
-
-        private bool DuplicateCheck()
-        {
-            bool found = false;
-            foreach(var item in wikiStorageList)
-            {
-                if(item.GetName().Equals(TextBoxName.Text.ToUpper()) && item.GetCategory().Equals(ComboBoxCategory.Text.ToUpper()))
-                {
-                    found = true;
-                    break;
-                }
-                else
-                {
-                    found = false;
-                }
-            }
-            return found;
-        }
-
-        #endregion Duplicate Check
-
-        #region Delete
-        private void ButtonDelete_Click(object sender, EventArgs e)
-        {
-            if (ListViewDisplay.SelectedItems.Count != 0 || !string.IsNullOrEmpty(TextBoxName.Text))
-            {
-                try
-                {
-                    for (int i = 0; i < wikiStorageList.Count; i++)
-                    {
-                        if (ListViewDisplay.Items[i].Selected || TextBoxName.Text.ToUpper().Equals(wikiStorageList[i].GetName()))
-                        {
-                            var confirmation = MessageBox.Show("Are You Sure You want to delete " + wikiStorageList[i].GetName(), "System Information", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                            if (confirmation == DialogResult.Yes)
-                            {
-                                StatusLabel.Text = wikiStorageList[i].GetName() + " Has Been Deleted Successfully";
-                                wikiStorageList.RemoveAt(i);
-                                DisplayList();
-                               break;
-                            }
-                            else if (confirmation == DialogResult.No)
-                            {
-                                StatusLabel.Text = "User Has Canceled to Delete";
-                            }
-                        }
-                        if (i == wikiStorageList.Count - 1 && !ListViewDisplay.Items[i].Selected
-                                || !TextBoxName.Text.ToUpper().Equals(wikiStorageList[i].GetName()))
-                        {
-                            StatusLabel.Text = "Item not in the List";
-                        }
-                    }
-                }
-                catch(Exception)
-                {
-                    MessageBox.Show("Something Went Wrong please try again","Delete Button Information",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                }
-               
-            }
-            else
-            {
-                MessageBox.Show("Select The Item from the List OR Enter the name of the item in Name TextBox to delete",
-                    "Delete Information",MessageBoxButtons.OK,MessageBoxIcon.Error);
-            }
-            ClearInput();
-        }
-
-        #endregion Delete
-
-        #region Modify
-        private void ButtonModify_Click(object sender, EventArgs e)
-        {
-            if(ListViewDisplay.SelectedItems.Count != 0 && InputStringCheck().Equals(true))
-            {
-                try
-                {
-                    int currentItem = ListViewDisplay.FocusedItem.Index;
-                    var confirmation = MessageBox.Show("Are You Sure to Edit " + wikiStorageList[currentItem].GetName(), "Edit Information",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
-                    if(confirmation == DialogResult.Yes)
-                    {
-                        StatusLabel.Text = wikiStorageList[currentItem].GetName() + " has been modified on user's Request";
-                        wikiStorageList[currentItem].SetName(TextBoxName.Text);
-                        wikiStorageList[currentItem].SetCategory(ComboBoxCategory.Text);
-                        wikiStorageList[currentItem].SetStructure(GetRadioButton());
-                        wikiStorageList[currentItem].SetDefinition(TextBoxDefinition.Text);
-                        DisplayList();
-                        ClearInput();
-                    }
-                    else
-                    {
-                        StatusLabel.Text = "User Has Canceled Modification";
-                    }
-                    
-                    
-                }
-                catch(IOException)
-                {
-                    MessageBox.Show("Something Went Wrong Please Try Again");
-                }
-            }
-            else
-            {
-                StatusLabel.Text = "Please select the Item from list to modify";
-            }
-            
-        }
-
-        #endregion Modify
-
-        #region Search
-        private void ButtonSearch_Click(object sender, EventArgs e)
-        {
-            if(!string.IsNullOrEmpty(TextBoxName.Text))
-            {
-                try
-                {
-                    Information findData = new Information();
-                    findData.SetName(TextBoxName.Text);
-                    int found = wikiStorageList.BinarySearch(findData);
-                    if (found >= 0)
-                    {
-                        ListViewDisplay.SelectedItems.Clear();
-                        ListViewDisplay.Items[found].Selected = true;
-                        ListViewDisplay.Focus();
-                        TextBoxName.Text = wikiStorageList[found].GetName();
-                        ComboBoxCategory.Text = wikiStorageList[found].GetCategory();
-                        SetRadioButton(found);
-                        TextBoxDefinition.Text = wikiStorageList[found].GetDefinition();
-
-                    }
-                    else
-                    {
-                        StatusLabel.Text = "Searched Item is not in the List";
-                    }
-                }
-                catch(IOException)
-                {
-                    MessageBox.Show("Something Went Wrong Please Try Again");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Enter the Name in Search Box","Search Informatio",MessageBoxButtons.OK,MessageBoxIcon.Error);
-            }
-            
-
-        }
-
-
-        #endregion Search
-
-        #region Save
-        private void ButtonSave_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.InitialDirectory = Application.StartupPath;
-            saveFileDialog.Filter = "BIN |*.bin";
-            saveFileDialog.Title = "Save Binary File";
-            DialogResult dr = saveFileDialog.ShowDialog();
-            if(dr.Equals(DialogResult.Cancel))
-            {
-                saveFileDialog.FileName = fileName;
-                StatusLabel.Text = "File Has been Saved with Default Name As " +Path.GetFileName(this.fileName);
-            }
-            if(dr.Equals(DialogResult.OK))
-            {
-                fileName = saveFileDialog.FileName;
-                StatusLabel.Text = "File Has been saved with " +Path.GetFileName(fileName);
-            }
-            try
-            {
-                using (var stream = File.Open(fileName,FileMode.Create))
-                {
-                    using(var writer = new BinaryWriter(stream, Encoding.UTF8,false))
-                    {
-                        foreach(var item in wikiStorageList)
-                        {
-                            writer.Write(item.GetName());
-                            writer.Write(item.GetCategory());
-                            writer.Write(item.GetStructure());
-                            writer.Write(item.GetDefinition());
-                        }
-                    }
-                }
-            }
-            catch(IOException)
-            {
-                MessageBox.Show("Unable to Save File", "Save Information",MessageBoxButtons.OK,MessageBoxIcon.Error);
-            }
-
-        }
-
-
-
-
-
-        #endregion Save
-
-        #region Open
-        private void ButtonOpen_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = Application.StartupPath;
-            openFileDialog.Filter = "BIN |*.bin";
-            openFileDialog.Title = "Open Saved File";
-            DialogResult or = openFileDialog.ShowDialog();
-            if(or.Equals(DialogResult.OK))
-            {
-                fileName = openFileDialog.FileName;
-                StatusLabel.Text = Path.GetFileName(fileName) + " Has Been Loaded";
-            }
-            if(or.Equals(DialogResult.Cancel))
-            {
-                StatusLabel.Text = "User Has Canceled to Open File";
-            }
-            try
-            {
-                wikiStorageList.Clear();
-                using(Stream stream = File.Open(fileName,FileMode.Open))
-                {
-                    using (var reader = new BinaryReader(stream, Encoding.UTF8,false))
-                    {
-                        while(stream.Position < stream.Length)
-                        {
-                            Information newDefinition = new Information();
-                            newDefinition.SetName(reader.ReadString());
-                            newDefinition.SetCategory(reader.ReadString());
-                            newDefinition.SetStructure(reader.ReadString());
-                            newDefinition.SetDefinition(reader.ReadString());
-                            wikiStorageList.Add(newDefinition);
-                        }
-
-                    }
-
-                }
-                DisplayList();
-            }
-            catch(IOException)
-            {
-                MessageBox.Show("Unable to Open FIle", "Open File Information", MessageBoxButtons.OK,MessageBoxIcon.Error);
-            }
-        }
-
-        #endregion Open
-
+        // Key Press and Copy Paste Event Control for textbox name and Category only for KEY_Press
         #region Invalid Character 
+
+        private void Key_Press(object sender, KeyPressEventArgs e)// handling character
+        {
+            e.Handled = e.KeyChar != (char)Keys.Back && !char.IsLetterOrDigit(e.KeyChar)
+                && !char.IsSeparator(e.KeyChar) && !char.IsControl(e.KeyChar);
+
+            if (e.Handled.Equals(true))
+            {
+                StatusLabel.Text = "Invalid Input";
+            }
+            else
+            {
+                StatusLabel.Text = "";
+            }
+        }
         private void TextBoxName_KeyPress(object sender, KeyPressEventArgs e)
         {
             Key_Press(sender,e);
@@ -500,20 +575,36 @@ namespace Data_Structure_Matrix_Advance
         }
         private void TextBoxName_TextChanged(object sender, EventArgs e)
         {
-            if (System.Text.RegularExpressions.Regex.IsMatch(TextBoxName.Text, "[^0-9][^a-z][^A-Z]"+ "([^0-9][^a-z][^A-Z]+)^*$"))
-            { 
+            if (System.Text.RegularExpressions.Regex.IsMatch(TextBoxName.Text, "([^0-9][^a-z][^A-Z])"+ "([^0-9][^a-z][^A-Z]+)^*$"))
+            {
                 TextBoxName.Text = "";
                 StatusLabel.Text = "Only Letter and Digits Allowed";
+                
             }
             else
             {
                 TextBoxName.Text = ((TextBox)sender).Text;
+
             }
         }
-
         #endregion Invalid Character
 
-       
+
+        private void TextDocument(string text)
+        {
+            string myFile = "TestFile.txt";
+            if (!File.Exists(myFile))
+            {
+                File.Create(myFile);
+
+            }
+            TextWriterTraceListener myTextListener = new TextWriterTraceListener(myFile);
+            Trace.Listeners.Add(myTextListener);
+            Trace.Write(text);
+            Trace.Flush();
+
+        }
+        
     }
 
 }

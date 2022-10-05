@@ -103,6 +103,7 @@
             this.TextBoxName.Size = new System.Drawing.Size(146, 31);
             this.TextBoxName.TabIndex = 2;
             this.TextBoxName.TextChanged += new System.EventHandler(this.TextBoxName_TextChanged);
+            this.TextBoxName.DoubleClick += new System.EventHandler(this.TextBoxName_DoubleClick);
             this.TextBoxName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBoxName_KeyPress);
             // 
             // ComboBoxCategory
@@ -303,6 +304,7 @@
             this.Controls.Add(this.ListViewDisplay);
             this.Name = "FormDataStructureMatrixAdvance";
             this.Text = "Data Structure Matrix Advance";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormDataStructureMatrixAdvance_FormClosed);
             this.Load += new System.EventHandler(this.FormDataStructureMatrixAdvance_Load);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormDataStructureMatrixAdvance_MouseMove);
             this.GroupBoxRadioButton.ResumeLayout(false);
