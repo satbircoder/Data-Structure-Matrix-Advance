@@ -47,14 +47,17 @@ namespace Data_Structure_Matrix_Advance
                         addInformation.SetDefinition(TextBoxDefinition.Text);
                         wikiStorageList.Add(addInformation);
 
-                        if (!ComboBoxCategory.Items.Equals(addInformation.GetCategory()))
+                        if (!ComboBoxCategory.Items.Equals(addInformation.GetCategory()))// Adding Item to Category as well 
                         {
                             ComboBoxCategory.Items.Add(addInformation.GetCategory());
                         }
                         DisplayList();
-                        int addIndex = wikiStorageList.BinarySearch(addInformation);
+                        int addIndex = wikiStorageList.BinarySearch(addInformation);// Selecting the Item After Added
+                        wikiStorageList.ElementAt(addIndex);
                         ListViewDisplay.Items[addIndex].Selected = true;
                         ListViewDisplay.Focus();
+                        StatusLabel.Text = "Added Successfully";
+                        
                     }
                     else
                     {
@@ -80,12 +83,12 @@ namespace Data_Structure_Matrix_Advance
         #region Category Load From Text File
         private void CategoryLoad()
         {
-            if (File.Exists("Category.txt"))
+            if (File.Exists("Category.txt"))// Checking File for existing
             {
-                string[] category = File.ReadAllLines("Category.txt");
+                string[] category = File.ReadAllLines("Category.txt");//Reading from FIle 
                 foreach (var item in category)
                 {
-                    ComboBoxCategory.Items.Add(item);
+                    ComboBoxCategory.Items.Add(item);//Adding Category items
                 }
             }
             else
@@ -100,7 +103,7 @@ namespace Data_Structure_Matrix_Advance
         //Use the built in List<T> method “Exists” to answer this requirement.
         #region Duplicate Check
 
-        private bool ValidName(string checkName)
+        private bool ValidName(string checkName)//Checking Name for existing
         {
             bool valid = false;
             if (wikiStorageList.Exists(x => x.GetName().Equals(checkName.ToUpper())))
@@ -122,7 +125,7 @@ namespace Data_Structure_Matrix_Advance
 
         private void SetRadioButton(int structure)
         {
-            foreach (RadioButton rb in GroupBoxRadioButton.Controls.OfType<RadioButton>())
+            foreach (RadioButton rb in GroupBoxRadioButton.Controls.OfType<RadioButton>())// Setting Radio button Checked  
             {
                 if (rb.Text == wikiStorageList[structure].GetStructure())
                 {
@@ -135,7 +138,7 @@ namespace Data_Structure_Matrix_Advance
             }
         }
 
-        private string GetRadioButton()
+        private string GetRadioButton()// for getting Structure from selection of the Radio Button
         {
             string rbstructure = "";
             foreach (RadioButton rb in GroupBoxRadioButton.Controls.OfType<RadioButton>())
@@ -164,13 +167,13 @@ namespace Data_Structure_Matrix_Advance
         #region Delete
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
-            if (ListViewDisplay.SelectedItems.Count != 0 || !string.IsNullOrEmpty(TextBoxName.Text))
+            if (ListViewDisplay.SelectedItems.Count != 0 || !string.IsNullOrEmpty(TextBoxName.Text))// Work only if text box is data in it and selected item from the List View
             {
                 try
                 {
                     for (int i = 0; i < wikiStorageList.Count; i++)
                     {
-                        if (ListViewDisplay.Items[i].Selected || TextBoxName.Text.ToUpper().Equals(wikiStorageList[i].GetName()))
+                        if (ListViewDisplay.Items[i].Selected || TextBoxName.Text.ToUpper().Equals(wikiStorageList[i].GetName()))// if Get the item to delete
                         {
                             var confirmation = MessageBox.Show("Are You Sure You want to delete " + wikiStorageList[i].GetName(), "System Information", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                             if (confirmation == DialogResult.Yes)
@@ -185,8 +188,7 @@ namespace Data_Structure_Matrix_Advance
                                 StatusLabel.Text = "User Has Canceled to Delete";
                             }
                         }
-                        if (i == wikiStorageList.Count - 1 && !ListViewDisplay.Items[i].Selected
-                                || !TextBoxName.Text.ToUpper().Equals(wikiStorageList[i].GetName()))
+                        else
                         {
                             StatusLabel.Text = "Item not in the List";
                         }
@@ -217,9 +219,9 @@ namespace Data_Structure_Matrix_Advance
             {
                 try
                 {
-                    int currentItem = ListViewDisplay.FocusedItem.Index;
+                    int currentItem = ListViewDisplay.FocusedItem.Index;//finding index of the current selected item
                     var confirmation = MessageBox.Show("Are You Sure to Edit " + wikiStorageList[currentItem].GetName(), "Edit Information", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (confirmation == DialogResult.Yes)
+                    if (confirmation == DialogResult.Yes)// Modifying if User Select Yes
                     {
                         StatusLabel.Text = wikiStorageList[currentItem].GetName() + " has been modified on user's Request";
                         wikiStorageList[currentItem].SetName(TextBoxName.Text);
@@ -247,7 +249,6 @@ namespace Data_Structure_Matrix_Advance
             }
 
         }
-
         #endregion Modify
 
         //6.9 Create a single custom method that will sort and then display the Name and Category from the wiki information in the list.
@@ -278,7 +279,7 @@ namespace Data_Structure_Matrix_Advance
                 {
                     Information findData = new Information();
                     findData.SetName(TextBoxName.Text);
-                    int found = wikiStorageList.BinarySearch(findData);
+                    int found = wikiStorageList.BinarySearch(findData);//Built in Binary Search Method and setting the focus on the item if found it 
                     if (found >= 0)
                     {
                         ListViewDisplay.SelectedItems.Clear();
@@ -327,7 +328,7 @@ namespace Data_Structure_Matrix_Advance
 
         //6.12 Create a custom method that will clear and reset the TextBoxes, ComboBox and Radio button
         #region Reset_Input
-        private void ClearInput()
+        private void ClearInput()// Clearing Everything from the fields
         {
             TextBoxName.Clear();
             TextBoxDefinition.Clear();
@@ -353,7 +354,7 @@ namespace Data_Structure_Matrix_Advance
         #region Save
         private void ButtonSave_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            SaveFileDialog saveFileDialog = new SaveFileDialog();// save file dialog filtering and saving file on user request 
             saveFileDialog.InitialDirectory = Application.StartupPath;
             saveFileDialog.Filter = "BIN |*.bin";
             saveFileDialog.Title = "Save Binary File";
@@ -372,7 +373,7 @@ namespace Data_Structure_Matrix_Advance
             {
                 using (var stream = File.Open(fileName, FileMode.Create))
                 {
-                    using (var writer = new BinaryWriter(stream, Encoding.UTF8, false))
+                    using (var writer = new BinaryWriter(stream, Encoding.UTF8, false))// writting on to file using binary writer
                     {
                         foreach (var item in wikiStorageList)
                         {
@@ -442,7 +443,7 @@ namespace Data_Structure_Matrix_Advance
         //6.15 The Wiki application will save data when the form closes. 
 
         #region Form_Closed Save
-        private void FormDataStructureMatrixAdvance_FormClosed(object sender, FormClosedEventArgs e)
+        private void FormDataStructureMatrixAdvance_FormClosed(object sender, FormClosedEventArgs e)// Saving file with lastData.bin name on form closing
         {
             string fileName = "lastData.bin";
            SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -475,7 +476,7 @@ namespace Data_Structure_Matrix_Advance
 
         // FormLoad Methods, Null Input check method, Clear Button Code
         #region Utilities
-        private void ButtonClear_Click(object sender, EventArgs e)
+        private void ButtonClear_Click(object sender, EventArgs e)// Can use clear button to clear text boxes and list view focus
         {
             if(InputStringCheck()==true || ListViewDisplay.SelectedItems.Count !=0)
 
@@ -490,7 +491,7 @@ namespace Data_Structure_Matrix_Advance
             }
 
         }
-        private void FormDataStructureMatrixAdvance_Load(object sender, EventArgs e)
+        private void FormDataStructureMatrixAdvance_Load(object sender, EventArgs e)// display the data using constructor from class through List loader method and radio button to uncheck
         {
             ListLoader();
             DisplayList();
@@ -551,7 +552,7 @@ namespace Data_Structure_Matrix_Advance
         // Key Press and Copy Paste Event Control for textbox name and Category only for KEY_Press
         #region Invalid Character 
 
-        private void Key_Press(object sender, KeyPressEventArgs e)// handling character
+        private void Key_Press(object sender, KeyPressEventArgs e)// handling character and only allows ctrl key to perform
         {
             e.Handled = e.KeyChar != (char)Keys.Back && !char.IsLetterOrDigit(e.KeyChar)
                 && !char.IsSeparator(e.KeyChar) && !char.IsControl(e.KeyChar);
@@ -573,7 +574,7 @@ namespace Data_Structure_Matrix_Advance
         {
             Key_Press(sender, e);
         }
-        private void TextBoxName_TextChanged(object sender, EventArgs e)
+        private void TextBoxName_TextChanged(object sender, EventArgs e)// handling copy and paste of symbols
         {
             if (System.Text.RegularExpressions.Regex.IsMatch(TextBoxName.Text, "([^0-9][^a-z][^A-Z])"+ "([^0-9][^a-z][^A-Z]+)^*$"))
             {
@@ -589,7 +590,7 @@ namespace Data_Structure_Matrix_Advance
         }
         #endregion Invalid Character
 
-
+        
         private void TextDocument(string text)
         {
             string myFile = "TestFile.txt";

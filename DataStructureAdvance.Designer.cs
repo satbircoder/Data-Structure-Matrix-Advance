@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDataStructureMatrixAdvance));
             this.ListViewDisplay = new System.Windows.Forms.ListView();
             this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -51,6 +52,7 @@
             this.StatusMessage = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStripMessage = new System.Windows.Forms.StatusStrip();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.GroupBoxRadioButton.SuspendLayout();
             this.statusStripMessage.SuspendLayout();
             this.SuspendLayout();
@@ -71,6 +73,7 @@
             this.ListViewDisplay.Name = "ListViewDisplay";
             this.ListViewDisplay.Size = new System.Drawing.Size(248, 360);
             this.ListViewDisplay.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.ListViewDisplay, "Display of Name and Category");
             this.ListViewDisplay.UseCompatibleStateImageBehavior = false;
             this.ListViewDisplay.View = System.Windows.Forms.View.Details;
             this.ListViewDisplay.Click += new System.EventHandler(this.ListViewDisplay_Click);
@@ -102,6 +105,7 @@
             this.TextBoxName.Name = "TextBoxName";
             this.TextBoxName.Size = new System.Drawing.Size(146, 31);
             this.TextBoxName.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.TextBoxName, "Enter Name to Add and Search");
             this.TextBoxName.TextChanged += new System.EventHandler(this.TextBoxName_TextChanged);
             this.TextBoxName.DoubleClick += new System.EventHandler(this.TextBoxName_DoubleClick);
             this.TextBoxName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBoxName_KeyPress);
@@ -109,12 +113,14 @@
             // ComboBoxCategory
             // 
             this.ComboBoxCategory.BackColor = System.Drawing.Color.Crimson;
+            this.ComboBoxCategory.ForeColor = System.Drawing.Color.White;
             this.ComboBoxCategory.FormattingEnabled = true;
             this.ComboBoxCategory.Location = new System.Drawing.Point(25, 95);
             this.ComboBoxCategory.Name = "ComboBoxCategory";
             this.ComboBoxCategory.Size = new System.Drawing.Size(128, 21);
             this.ComboBoxCategory.Sorted = true;
             this.ComboBoxCategory.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.ComboBoxCategory, "Select Category");
             this.ComboBoxCategory.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ComboBoxCategory_KeyPress);
             // 
             // labelCategory
@@ -137,6 +143,7 @@
             this.GroupBoxRadioButton.TabIndex = 5;
             this.GroupBoxRadioButton.TabStop = false;
             this.GroupBoxRadioButton.Text = "Structure";
+            this.toolTip1.SetToolTip(this.GroupBoxRadioButton, "Choose Structure");
             // 
             // RadioButtonNonLinear
             // 
@@ -167,6 +174,7 @@
             this.TextBoxDefinition.Name = "TextBoxDefinition";
             this.TextBoxDefinition.Size = new System.Drawing.Size(227, 102);
             this.TextBoxDefinition.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.TextBoxDefinition, "Enter Definition Here");
             // 
             // labelDefinition
             // 
@@ -187,6 +195,7 @@
             this.ButtonSearch.Size = new System.Drawing.Size(75, 31);
             this.ButtonSearch.TabIndex = 8;
             this.ButtonSearch.Text = "SEARCH";
+            this.toolTip1.SetToolTip(this.ButtonSearch, "Click to Search");
             this.ButtonSearch.UseVisualStyleBackColor = false;
             this.ButtonSearch.Click += new System.EventHandler(this.ButtonSearch_Click);
             // 
@@ -198,6 +207,7 @@
             this.ButtonSave.Size = new System.Drawing.Size(75, 31);
             this.ButtonSave.TabIndex = 9;
             this.ButtonSave.Text = "SAVE";
+            this.toolTip1.SetToolTip(this.ButtonSave, "Click To Save File");
             this.ButtonSave.UseVisualStyleBackColor = false;
             this.ButtonSave.Click += new System.EventHandler(this.ButtonSave_Click);
             // 
@@ -209,6 +219,7 @@
             this.ButtonOpen.Size = new System.Drawing.Size(75, 31);
             this.ButtonOpen.TabIndex = 10;
             this.ButtonOpen.Text = "OPEN";
+            this.toolTip1.SetToolTip(this.ButtonOpen, "Click to Open File");
             this.ButtonOpen.UseVisualStyleBackColor = false;
             this.ButtonOpen.Click += new System.EventHandler(this.ButtonOpen_Click);
             // 
@@ -220,6 +231,7 @@
             this.ButtonDelete.Size = new System.Drawing.Size(75, 31);
             this.ButtonDelete.TabIndex = 11;
             this.ButtonDelete.Text = "DELETE";
+            this.toolTip1.SetToolTip(this.ButtonDelete, "Click To Delete Data");
             this.ButtonDelete.UseVisualStyleBackColor = false;
             this.ButtonDelete.Click += new System.EventHandler(this.ButtonDelete_Click);
             // 
@@ -231,6 +243,7 @@
             this.ButtonModify.Size = new System.Drawing.Size(75, 31);
             this.ButtonModify.TabIndex = 12;
             this.ButtonModify.Text = "MODIFY";
+            this.toolTip1.SetToolTip(this.ButtonModify, "Click To Edit Data");
             this.ButtonModify.UseVisualStyleBackColor = false;
             this.ButtonModify.Click += new System.EventHandler(this.ButtonModify_Click);
             // 
@@ -242,6 +255,7 @@
             this.ButtonAdd.Size = new System.Drawing.Size(75, 31);
             this.ButtonAdd.TabIndex = 13;
             this.ButtonAdd.Text = "ADD";
+            this.toolTip1.SetToolTip(this.ButtonAdd, "Click To Add");
             this.ButtonAdd.UseVisualStyleBackColor = false;
             this.ButtonAdd.Click += new System.EventHandler(this.ButtonAdd_Click);
             // 
@@ -253,6 +267,7 @@
             this.ButtonClear.Size = new System.Drawing.Size(75, 31);
             this.ButtonClear.TabIndex = 15;
             this.ButtonClear.Text = "CLEAR";
+            this.toolTip1.SetToolTip(this.ButtonClear, "Click to Clear Selection and Data Fields");
             this.ButtonClear.UseVisualStyleBackColor = false;
             this.ButtonClear.Click += new System.EventHandler(this.ButtonClear_Click);
             // 
@@ -340,6 +355,7 @@
         private System.Windows.Forms.ToolStripStatusLabel StatusMessage;
         private System.Windows.Forms.ToolStripStatusLabel StatusLabel;
         private System.Windows.Forms.StatusStrip statusStripMessage;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 
