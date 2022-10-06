@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.IO;
 using System.Linq.Expressions;
 using System.Diagnostics;
+using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 // Satbir Singh
 // Date: 05/10/2022
 // Student ID 30048567
@@ -576,7 +578,9 @@ namespace Data_Structure_Matrix_Advance
         }
         private void TextBoxName_TextChanged(object sender, EventArgs e)// handling copy and paste of symbols
         {
-            if (System.Text.RegularExpressions.Regex.IsMatch(TextBoxName.Text, "([^0-9][^a-z][^A-Z])"+ "([^0-9][^a-z][^A-Z]+)^*$"))
+            
+            Regex regex = new Regex("^[A-Za-z0-9 ]+$");
+            if (regex.IsMatch(TextBoxName.Text)==false)
             {
                 TextBoxName.Text = "";
                 StatusLabel.Text = "Only Letter and Digits Allowed";
