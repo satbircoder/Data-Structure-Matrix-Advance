@@ -48,18 +48,16 @@ namespace Data_Structure_Matrix_Advance
                         addInformation.SetStructure(GetRadioButton());
                         addInformation.SetDefinition(TextBoxDefinition.Text);
                         wikiStorageList.Add(addInformation);
-
                         if (!ComboBoxCategory.Items.Equals(addInformation.GetCategory()))// Adding Item to Category as well 
                         {
                             ComboBoxCategory.Items.Add(addInformation.GetCategory());
                         }
                         DisplayList();
+                        StatusLabel.Text = "Added Successfully";
                         int addIndex = wikiStorageList.BinarySearch(addInformation);// Selecting the Item After Added
                         wikiStorageList.ElementAt(addIndex);
                         ListViewDisplay.Items[addIndex].Selected = true;
                         ListViewDisplay.Focus();
-                        StatusLabel.Text = "Added Successfully";
-                        
                     }
                     else
                     {
@@ -190,9 +188,10 @@ namespace Data_Structure_Matrix_Advance
                                 StatusLabel.Text = "User Has Canceled to Delete";
                             }
                         }
-                        else
+                        if(i.Equals(wikiStorageList.Count-1)
+                            && !TextBoxName.Text.ToUpper().Equals(wikiStorageList[i].GetName()))
                         {
-                            StatusLabel.Text = "Item not in the List";
+                            StatusLabel.Text = TextBoxName.Text +" Item not in the List";
                         }
                     }
                 }
@@ -481,7 +480,6 @@ namespace Data_Structure_Matrix_Advance
         private void ButtonClear_Click(object sender, EventArgs e)// Can use clear button to clear text boxes and list view focus
         {
             if(InputStringCheck()==true || ListViewDisplay.SelectedItems.Count !=0)
-
             {
                 ClearInput();
                 StatusLabel.Text = "All Fields Cleared Successfully";
@@ -580,7 +578,7 @@ namespace Data_Structure_Matrix_Advance
         {
             
             Regex regex = new Regex("^[A-Za-z0-9 ]+$");
-            if (regex.IsMatch(TextBoxName.Text)==false)
+            if (regex.IsMatch(TextBoxName.Text)==false && TextBoxName.Text != "")
             {
                 TextBoxName.Text = "";
                 StatusLabel.Text = "Only Letter and Digits Allowed";
@@ -589,7 +587,7 @@ namespace Data_Structure_Matrix_Advance
             else
             {
                 TextBoxName.Text = ((TextBox)sender).Text;
-
+                
             }
         }
         #endregion Invalid Character
