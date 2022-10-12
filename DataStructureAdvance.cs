@@ -593,19 +593,13 @@ namespace Data_Structure_Matrix_Advance
         #endregion Invalid Character
 
         
-        private void TextDocument(string text)
+        private void TestDocument(object text)
         {
             string myFile = "TestFile.txt";
-            if (!File.Exists(myFile))
-            {
-                File.Create(myFile);
-
-            }
             TextWriterTraceListener myTextListener = new TextWriterTraceListener(myFile);
             Trace.Listeners.Add(myTextListener);
-            Trace.Write(text);
+            Trace.Write(text.ToString());
             Trace.Flush();
-
         }
         
     }
