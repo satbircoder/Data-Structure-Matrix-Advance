@@ -43,6 +43,7 @@ namespace Data_Structure_Matrix_Advance
                 {
                     if (ValidName(TextBoxName.Text).Equals(false))
                     {
+                        
                         addInformation.SetName(TextBoxName.Text);
                         addInformation.SetCategory(ComboBoxCategory.Text);
                         addInformation.SetStructure(GetRadioButton());
@@ -58,10 +59,12 @@ namespace Data_Structure_Matrix_Advance
                         wikiStorageList.ElementAt(addIndex);
                         ListViewDisplay.Items[addIndex].Selected = true;
                         ListViewDisplay.Focus();
+                        
                     }
                     else
                     {
                         StatusLabel.Text = "Already Exists";
+                        
                     }
                 }
                 catch (IOException)
@@ -73,6 +76,7 @@ namespace Data_Structure_Matrix_Advance
             else
             {
                 StatusLabel.Text = "All Fields Must Have Data in it to add";
+                
             }
             ClearInput();
         }
@@ -167,6 +171,7 @@ namespace Data_Structure_Matrix_Advance
         #region Delete
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
+            
             if (ListViewDisplay.SelectedItems.Count != 0 || !string.IsNullOrEmpty(TextBoxName.Text))// Work only if text box is data in it and selected item from the List View
             {
                 try
@@ -183,15 +188,16 @@ namespace Data_Structure_Matrix_Advance
                                 DisplayList();
                                 break;
                             }
-                            else if (confirmation == DialogResult.No)
+                            else 
                             {
-                                StatusLabel.Text = "User Has Canceled to Delete";
+                                StatusLabel.Text = "User Has Cancelled to Delete";
+                                
                             }
                         }
                         if(i.Equals(wikiStorageList.Count-1)
                             && !TextBoxName.Text.ToUpper().Equals(wikiStorageList[i].GetName()))
                         {
-                            StatusLabel.Text = TextBoxName.Text +" Item not in the List";
+                            StatusLabel.Text = TextBoxName.Text +" is not in the List";
                         }
                     }
                 }
@@ -221,8 +227,9 @@ namespace Data_Structure_Matrix_Advance
                 try
                 {
                     int currentItem = ListViewDisplay.FocusedItem.Index;//finding index of the current selected item
-                    var confirmation = MessageBox.Show("Are You Sure to Edit " + wikiStorageList[currentItem].GetName(), "Edit Information", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (confirmation == DialogResult.Yes)// Modifying if User Select Yes
+                    var confirmation = MessageBox.Show("Are You Sure to Edit " + wikiStorageList[currentItem].GetName(), "Edit Information", 
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (confirmation == DialogResult.Yes && ValidName(TextBoxName.Text).Equals(false) || wikiStorageList[currentItem].GetName().Equals(TextBoxName.Text))// Modifying if User Select Yes
                     {
                         StatusLabel.Text = wikiStorageList[currentItem].GetName() + " has been modified on user's Request";
                         wikiStorageList[currentItem].SetName(TextBoxName.Text);
@@ -232,9 +239,13 @@ namespace Data_Structure_Matrix_Advance
                         DisplayList();
                         ClearInput();
                     }
-                    else
+                    if(confirmation == DialogResult.No)
                     {
-                        StatusLabel.Text = "User Has Canceled Modification";
+                        StatusLabel.Text = "User Has Cancelled Modification";
+                    }
+                    if (confirmation == DialogResult.Yes && ValidName(TextBoxName.Text).Equals(true) && !wikiStorageList[currentItem].GetName().Equals(TextBoxName.Text))
+                    {
+                        StatusLabel.Text = TextBoxName.Text +" Already Exists";
                     }
 
 
@@ -290,6 +301,7 @@ namespace Data_Structure_Matrix_Advance
                         ComboBoxCategory.Text = wikiStorageList[found].GetCategory();
                         SetRadioButton(found);
                         TextBoxDefinition.Text = wikiStorageList[found].GetDefinition();
+                        StatusLabel.Text = wikiStorageList[found].GetName() + " is found in line " + ListViewDisplay.Items[found+1].Index;
 
                     }
                     else
@@ -409,7 +421,7 @@ namespace Data_Structure_Matrix_Advance
             }
             if (or.Equals(DialogResult.Cancel))
             {
-                StatusLabel.Text = "User Has Canceled to Open File";
+                StatusLabel.Text = "User Has Cancelled to Open File";
             }
             try
             {
@@ -516,7 +528,7 @@ namespace Data_Structure_Matrix_Advance
         }
         private void FormDataStructureMatrixAdvance_MouseMove(object sender, MouseEventArgs e)
         {
-            StatusLabel.Text = "";
+           // StatusLabel.Text = "";
         }
        
         private void ListLoader()// Loaded list using Class Constructor
@@ -591,17 +603,6 @@ namespace Data_Structure_Matrix_Advance
             }
         }
         #endregion Invalid Character
-
-        
-        private void TestDocument(object text)
-        {
-            string myFile = "TestFile.txt";
-            TextWriterTraceListener myTextListener = new TextWriterTraceListener(myFile);
-            Trace.Listeners.Add(myTextListener);
-            Trace.Write(text.ToString());
-            Trace.Flush();
-        }
-        
     }
 
 }
